@@ -8,7 +8,8 @@
         <div class="absolute bg-black  opacity-25 inset-0 z-0"></div>
         <div class="w-full  lg:max-w-2xl md:max-w-md z-10 items-center text-center ">
           <div class=" font-bold leading-tight mb-6 mx-auto w-full content-center items-center ">
-            <img src="/images/logo-white.svg" class="ml-3 w-auto lg:h-20 h-15 inline" />
+            <img src="/images/bulme_logo_white.png" class="ml-3 w-auto lg:h-20 h-15 inline" />
+            <img src="/images/icons/bulme/icon_leaf_white.svg" class="ml-5 h-16 inline opacity-50" />
           </div>
         </div>
       </div>
@@ -16,7 +17,7 @@
         <div class="max-w-xl w-full space-y-4">
           <div class="lg:text-left text-center">
             <h2 class="mt-6  font-bold text-gray-100">
-              <img src="/images/logo.svg" class="h-10 w-auto inline" />
+              <img src="/images/bulme_logo_white.png" class="h-10 w-auto inline" />
             </h2>
             <h2 class="mt-6 text-4xl md:text-6xl font-bold text-gray-100">
               {gettext("It's time to empower your presentations.")}
@@ -80,7 +81,7 @@
               to: ~p"/users/reset_password",
               class: "text-white text-sm text-center"
             )}
-            <%= if Application.get_env(:claper, :enable_account_creation) do %>
+            <%= if Application.get_env(:Bludo, :enable_account_creation) do %>
               <span class="text-white">•</span> {link(gettext("Create account"),
                 to: ~p"/users/register",
                 class: "text-white text-sm text-center"

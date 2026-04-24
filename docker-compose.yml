@@ -2,30 +2,30 @@ services:
   db:
     image: postgres:15
     volumes:
-      - "claper-db:/var/lib/postgresql/data"
+      - "bludo-db:/var/lib/postgresql/data"
     healthcheck:
       test:
         - CMD
         - pg_isready
         - "-q"
         - "-d"
-        - "claper"
+        - "bludo"
         - "-U"
-        - "claper"
+        - "bludo"
       retries: 3
       timeout: 5s
     environment:
-      POSTGRES_PASSWORD: claper
-      POSTGRES_USER: claper
-      POSTGRES_DB: claper
+      POSTGRES_PASSWORD: bludo
+      POSTGRES_USER: bludo
+      POSTGRES_DB: bludo
     networks:
-      - claper-net
+      - bludo-net
   app:
-    image: ghcr.io/claperco/claper:latest # or build: .
+    build: .
     ports:
       - 4000:4000
     volumes:
-      - "claper-uploads:/app/uploads"
+      - "bludo-uploads:/app/uploads"
     healthcheck:
       test: curl --fail http://localhost:4000 || exit 1
       retries: 3
@@ -36,14 +36,14 @@ services:
       db:
         condition: service_healthy
     networks:
-      - claper-net
+      - bludo-net
 
 volumes:
-  claper-db:
+  bludo-db:
     driver: local
-  claper-uploads:
+  bludo-uploads:
     driver: local
 
 networks:
-  claper-net:
+  bludo-net:
     driver: bridge

@@ -265,7 +265,7 @@
                       {"Nederlands", "nl"}
                     ]
                     |> Enum.filter(fn {_name, code} ->
-                      code in Application.get_env(:claper, :languages, [
+                      code in Application.get_env(:Bludo, :languages, [
                         "en",
                         "fr",
                         "es",

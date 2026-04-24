@@ -201,7 +201,8 @@ config :claper, ClaperWeb.Endpoint,
   ],
   secret_key_base: secret_key_base,
   same_site_cookie: same_site_cookie,
-  secure_cookie: secure_cookie
+  secure_cookie: secure_cookie,
+  check_origin: false
 
 config :claper,
   enable_account_creation: enable_account_creation,

@@ -1,29 +1,35 @@
 
 @theme {
   /* Primary Colors (water-blue) */
-  --color-primary-50: #E3F2FD;
-  --color-primary-100: #C2E3FA;
-  --color-primary-200: #84C8F6;
-  --color-primary-300: #3DA7F0;
-  --color-primary-400: #1395EC;
-  --color-primary-500: #1186D5;
-  --color-primary-600: #0D65A1;
-  --color-primary-700: #0A5689;
-  --color-primary-800: #0A4B76;
-  --color-primary-900: #073250;
+  --color-primary-50: #E8F0F5;
+  --color-primary-100: #C5D8E4;
+  --color-primary-200: #9FBFD3;
+  --color-primary-300: #74A3BF;
+  --color-primary-400: #4E87AB;
+  --color-primary-500: #2A6B97;
+  --color-primary-600: #1C4F72;
+  --color-primary-700: #102D41;
+  --color-primary-800: #0C1F2E;
+  --color-primary-900: #07111A;
   
-  /* Secondary Colors (electric-purple) */
-  --color-secondary-50: #F2E0FF;
-  --color-secondary-100: #E3BDFF;
-  --color-secondary-200: #C77AFF;
-  --color-secondary-300: #A62EFF;
-  --color-secondary-400: #9200FF;
-  --color-secondary-500: #A327FF;
-  --color-secondary-600: #6400AD;
-  --color-secondary-700: #550094;
-  --color-secondary-800: #490080;
-  --color-secondary-900: #320057;
+  /* Secondary Colors (Button Blue) */
+  --color-secondary-50: #E6F3FB;
+  --color-secondary-100: #BEE1F5;
+  --color-secondary-200: #93CDEE;
+  --color-secondary-300: #65B8E6;
+  --color-secondary-400: #42A7E0;
+  --color-secondary-500: #1C96D9; /* Button Blue #3A8FCC roughly */
+  --color-secondary-600: #167CB5;
+  --color-secondary-700: #106291;
+  --color-secondary-800: #0B4A6E;
+  --color-secondary-900: #06314A;
   
+  /* Department Colors */
+  --color-dept-maschinenbau: #7BB7E5;
+  --color-dept-elektrotechnik: #DE5528;
+  --color-dept-elektronik: #A2CB3E;
+  --color-dept-wirtschaft: #FFE32C;
+
   /* Neutral Colors (wedgewood) */
   --color-neutral-50: #F0F4F8;
   --color-neutral-100: #D9E3ED;
@@ -73,15 +79,15 @@
   --color-supporting-green-900: #064E3B;
   
   /* Font Family */
-  --font-family-sans: 'Roboto', sans-serif;
-  --font-family-serif: 'Merriweather', serif;
-  --font-display: 'Montserrat', sans-serif;
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-serif: 'Inter', sans-serif;
+  --font-display: 'DIN Condensed', sans-serif;
   
-  /* Box Shadows */
-  --shadow-base: 0px 1px 3px 0px rgba(0,0,0,0.1), 0px 1px 2px 0px rgba(0,0,0,0.06);
-  --shadow-md: 0px 4px 6px 0px rgba(0,0,0,0.1), 0px 2px 4px 0px rgba(0,0,0,0.06);
-  --shadow-lg: 0px 4px 6px 0px rgba(0,0,0,0.05), 0px 10px 15px 0px rgba(0,0,0,0.1);
-  --shadow-xl: 0px 10px 10px 0px rgba(0,0,0,0.04), 0px 20px 25px 0px rgba(0,0,0,0.1);
-  --shadow-2xl: 0px 25px 50px 0px rgba(0,0,0,0.25);
-  --shadow-inner: inset 0px 2px 4px 0px rgba(0,0,0,0.06);
+  /* Box Shadows - Flattened */
+  --shadow-base: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-2xl: none;
+  --shadow-inner: none;
 }

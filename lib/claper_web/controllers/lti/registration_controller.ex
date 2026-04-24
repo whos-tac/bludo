@@ -80,9 +80,9 @@ defmodule ClaperWeb.Lti.RegistrationController do
       "redirect_uris" => [
         "#{url}/lti/launch"
       ],
-      "client_name" => "Claper",
+      "client_name" => "Bludo",
       "jwks_uri" => "#{url}/.well-known/jwks.json",
-      "logo_uri" => "#{url}/images/logo.svg",
+      "logo_uri" => "#{url}/images/bulme-logo-full.png",
       "token_endpoint_auth_method" => "private_key_jwt",
       "scope" =>
         "https://purl.imsglobal.org/spec/lti-ags/scope/score https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly",

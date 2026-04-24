@@ -758,7 +758,7 @@
                 <div class="bg-white rounded-lg p-3 shadow-base transition-all flex flex-col justify-between relative">
                   <div>
                     <%= case interaction do %>
-                      <% %Claper.Polls.Poll{} -> %>
+                      <% %Bludo.Polls.Poll{} -> %>
                         <div class="flex items-center justify-between mb-2">
                           <div class="flex items-center w-full">
                             <div class="flex h-8 w-8 flex-none text-white items-center justify-center rounded-lg bg-linear-to-br from-primary-500 to-secondary-500 mr-2">
@@ -802,7 +802,7 @@
                             </svg>
                           </a>
                         </div>
-                      <% %Claper.Forms.Form{} -> %>
+                      <% %Bludo.Forms.Form{} -> %>
                         <div class="flex items-center justify-between mb-2">
                           <div class="flex items-center w-full">
                             <div class="flex h-8 w-8 flex-none text-white items-center justify-center rounded-lg bg-linear-to-br from-primary-500 to-secondary-500 mr-2">
@@ -843,7 +843,7 @@
                             </svg>
                           </.link>
                         </div>
-                      <% %Claper.Embeds.Embed{} -> %>
+                      <% %Bludo.Embeds.Embed{} -> %>
                         <div class="flex items-center justify-between mb-2">
                           <div class="flex items-center w-full">
                             <div class="flex h-8 w-8 flex-none text-white items-center justify-center rounded-lg bg-linear-to-br from-primary-500 to-secondary-500 mr-2">
@@ -888,7 +888,7 @@
                             </svg>
                           </a>
                         </div>
-                      <% %Claper.Quizzes.Quiz{} -> %>
+                      <% %Bludo.Quizzes.Quiz{} -> %>
                         <div class="flex items-center justify-between mb-2">
                           <div class="flex items-center w-full">
                             <div class="flex h-8 w-8 flex-none text-white items-center justify-center rounded-lg bg-linear-to-br from-primary-500 to-secondary-500 mr-2">
@@ -958,7 +958,7 @@
                     <% end %>
                     <div class="text-sm mb-4 flex gap-x-2 items-center">
                       <%= case interaction do %>
-                        <% %Claper.Embeds.Embed{} -> %>
+                        <% %Bludo.Embeds.Embed{} -> %>
                           <%= case(interaction.provider) do %>
                             <% "youtube" -> %>
                               <svg
@@ -1080,10 +1080,10 @@
                         <button
                           phx-click={
                             case interaction do
-                              %Claper.Polls.Poll{} -> "poll-set-inactive"
-                              %Claper.Forms.Form{} -> "form-set-inactive"
-                              %Claper.Embeds.Embed{} -> "embed-set-inactive"
-                              %Claper.Quizzes.Quiz{} -> "quiz-set-inactive"
+                              %Bludo.Polls.Poll{} -> "poll-set-inactive"
+                              %Bludo.Forms.Form{} -> "form-set-inactive"
+                              %Bludo.Embeds.Embed{} -> "embed-set-inactive"
+                              %Bludo.Quizzes.Quiz{} -> "quiz-set-inactive"
                               _ -> ""
                             end
                           }
@@ -1097,10 +1097,10 @@
                       <button
                         phx-click={
                           case interaction do
-                            %Claper.Polls.Poll{} -> "poll-set-active"
-                            %Claper.Forms.Form{} -> "form-set-active"
-                            %Claper.Embeds.Embed{} -> "embed-set-active"
-                            %Claper.Quizzes.Quiz{} -> "quiz-set-active"
+                            %Bludo.Polls.Poll{} -> "poll-set-active"
+                            %Bludo.Forms.Form{} -> "form-set-active"
+                            %Bludo.Embeds.Embed{} -> "embed-set-active"
+                            %Bludo.Quizzes.Quiz{} -> "quiz-set-active"
                             _ -> ""
                           end
                         }

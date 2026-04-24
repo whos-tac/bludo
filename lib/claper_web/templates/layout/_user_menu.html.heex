@@ -6,14 +6,14 @@
     {gettext("My account")}
   </a>
   <a
-    :if={Claper.Accounts.user_has_role?(@user, "admin")}
+    :if={Bludo.Accounts.user_has_role?(@user, "admin")}
     href={~p"/admin"}
     class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
   >
     {gettext("Admin")}
   </a>
   <a
-    href="https://docs.claper.co"
+    href="https://bulme.at"
     class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
   >
     {gettext("Documentation")}
@@ -28,6 +28,6 @@
 </div>
 <div class="py-1" role="none">
   <p class="text-gray-500 block px-4 text-xs py-1">
-    Version {Application.spec(:claper, :vsn)}
+    Version {Application.spec(:Bludo, :vsn)} (Bludo)
   </p>
 </div>

@@ -31,7 +31,7 @@ import "./admin-charts.js";
 window.moment = moment;
 
 // Get supported locales from backend configuration or fallback to default list
-const supportedLocales = window.claperConfig?.supportedLocales || [
+const supportedLocales = window.bludoConfig?.supportedLocales || [
   "en",
   "fr",
   "de",
@@ -42,7 +42,7 @@ const supportedLocales = window.claperConfig?.supportedLocales || [
   "lv",
 ];
 
-const airdatePickrSupportedLocales = window.claperConfig?.supportedLocales || [
+const airdatePickrSupportedLocales = window.bludoConfig?.supportedLocales || [
   "en",
   "fr",
   "de",

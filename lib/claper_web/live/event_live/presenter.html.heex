@@ -22,6 +22,10 @@
     class={"#{if @state.join_screen_visible, do: "opacity-100 z-40", else: "opacity-0"} h-full w-full flex flex-col justify-center bg-black absolute transition-opacity"}
   >
     <div class="h-full bg-white text-black text-center flex flex-col items-center justify-center">
+      <div class="flex items-center mb-10">
+        <img src="/images/bulme_logo_blue.png" class="h-32" />
+        <img src="/images/icons/bulme/icon_key_blue.svg" class="h-24 ml-8 opacity-30" />
+      </div>
       <span class="font-semibold mb-10 sm:text-3xl md:text-4xl lg:text-6xl">
         {gettext("Scan to interact in real-time")}
       </span>

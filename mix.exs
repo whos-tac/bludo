@@ -14,11 +14,11 @@ defmodule Claper.MixProject do
       deps: deps(),
 
       # Docs
-      name: "Claper",
-      source_url: "https://github.com/ClaperCo/Claper",
-      homepage_url: "https://claper.co",
+      name: "Bludo",
+      source_url: "https://bulme.at",
+      homepage_url: "https://bulme.at",
       docs: [
-        logo: "priv/static/images/logo.png",
+        logo: "priv/static/images/bulme-logo-full.png",
         groups_for_modules: [
           "User management": [
             ~r/Claper\.Account\.?/,
