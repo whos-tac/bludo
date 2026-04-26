@@ -1,6 +1,6 @@
 defmodule Lti13.Resources do
   import Ecto.Query, warn: false
-  alias Claper.Repo
+  alias Bludo.Repo
   alias Lti13.Resources.Resource
 
   def create_resource(attrs) do
@@ -25,7 +25,7 @@ defmodule Lti13.Resources do
 
   ## Examples
       iex> create_resource_with_event(%{title: "Test", resource_id: "123", line_items_url: "https://example.com", lti_user: %Lti13.Users.User{}})
-      {:ok, %Claper.Events.Event{}, %Lti13.Resources.Resource{}}
+      {:ok, %Bludo.Events.Event{}, %Lti13.Resources.Resource{}}
       iex> create_resource_with_event(%{})
       {:error, %{reason: :invalid_resource, msg: "Failed to create resource"}}
   """
@@ -36,7 +36,7 @@ defmodule Lti13.Resources do
         lti_user: lti_user
       }) do
     with {:ok, event} <-
-           Claper.Events.create_event(%{
+           Bludo.Events.create_event(%{
              name: title,
              code:
                :crypto.strong_rand_bytes(10) |> Base.encode16(case: :lower) |> binary_part(0, 6),
@@ -62,3 +62,6 @@ defmodule Lti13.Resources do
     end
   end
 end
+
+
+

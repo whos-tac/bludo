@@ -1,10 +1,10 @@
-defmodule Claper.AccountsTest do
-  use Claper.DataCase
+defmodule Bludo.AccountsTest do
+  use Bludo.DataCase
 
-  alias Claper.Accounts
+  alias Bludo.Accounts
 
-  import Claper.AccountsFixtures
-  alias Claper.Accounts.{User, UserToken}
+  import Bludo.AccountsFixtures
+  alias Bludo.Accounts.{User, UserToken}
 
   require Logger
 
@@ -313,3 +313,5 @@ defmodule Claper.AccountsTest do
     end
   end
 end
+
+

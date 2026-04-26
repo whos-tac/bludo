@@ -1,11 +1,11 @@
-defmodule ClaperWeb.EventCardComponentTest do
-  use ClaperWeb.ConnCase
+defmodule BludoWeb.EventCardComponentTest do
+  use BludoWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Claper.{PresentationsFixtures, EventsFixtures}
+  import Bludo.{PresentationsFixtures, EventsFixtures}
 
-  @spec create_event(Claper.Accounts.User.t(), NaiveDateTime.t(), NaiveDateTime.t()) ::
-          Claper.Presentations.PresentationFile.t()
+  @spec create_event(Bludo.Accounts.User.t(), NaiveDateTime.t(), NaiveDateTime.t()) ::
+          Bludo.Presentations.PresentationFile.t()
   defp create_event(user, started_at, expired_at \\ nil) do
     event = event_fixture(%{user: user, started_at: started_at, expired_at: expired_at})
     presentation_file = presentation_file_fixture(%{event: event}, [:event])
@@ -51,3 +51,5 @@ defmodule ClaperWeb.EventCardComponentTest do
     end
   end
 end
+
+

@@ -1,12 +1,12 @@
-defmodule Claper.PresentationsFixtures do
+defmodule Bludo.PresentationsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Presentations` context.
+  entities via the `Bludo.Presentations` context.
   """
 
-  import Claper.{EventsFixtures}
+  import Bludo.{EventsFixtures}
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate a presentation_file.
@@ -22,9 +22,9 @@ defmodule Claper.PresentationsFixtures do
         status: "done",
         event_id: assoc.event.id
       })
-      |> Claper.Presentations.create_presentation_file()
+      |> Bludo.Presentations.create_presentation_file()
 
-    Claper.UtilFixture.merge_preload(presentation_file, preload, assoc)
+    Bludo.UtilFixture.merge_preload(presentation_file, preload, assoc)
   end
 
   @doc """
@@ -43,8 +43,10 @@ defmodule Claper.PresentationsFixtures do
         poll_visible: false,
         join_screen_visible: false
       })
-      |> Claper.Presentations.create_presentation_state()
+      |> Bludo.Presentations.create_presentation_state()
 
-    Claper.UtilFixture.merge_preload(presentation_state, preload, assoc)
+    Bludo.UtilFixture.merge_preload(presentation_state, preload, assoc)
   end
 end
+
+

@@ -1,9 +1,9 @@
-defmodule ClaperWeb.UserConfirmationControllerTest do
-  use ClaperWeb.ConnCase, async: true
+defmodule BludoWeb.UserConfirmationControllerTest do
+  use BludoWeb.ConnCase, async: true
 
-  alias Claper.Accounts
-  alias Claper.Repo
-  import Claper.AccountsFixtures
+  alias Bludo.Accounts
+  alias Bludo.Repo
+  import Bludo.AccountsFixtures
 
   setup do
     %{user: user_fixture()}
@@ -95,3 +95,5 @@ defmodule ClaperWeb.UserConfirmationControllerTest do
     end
   end
 end
+
+

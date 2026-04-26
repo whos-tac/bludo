@@ -1,5 +1,5 @@
 defmodule Lti13.Jwks.Utils.KeyGeneratorTest do
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Jwks.Utils.KeyGenerator
 
@@ -17,3 +17,5 @@ defmodule Lti13.Jwks.Utils.KeyGeneratorTest do
     end
   end
 end
+
+

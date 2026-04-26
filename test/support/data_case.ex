@@ -1,4 +1,4 @@
-defmodule Claper.DataCase do
+defmodule Bludo.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule Claper.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Claper.DataCase, async: true`, although
+  by setting `use Bludo.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -18,23 +18,23 @@ defmodule Claper.DataCase do
 
   using do
     quote do
-      use Oban.Testing, repo: Claper.Repo
-      alias Claper.Repo
+      use Oban.Testing, repo: Bludo.Repo
+      alias Bludo.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Claper.DataCase
+      import Bludo.DataCase
     end
   end
 
   setup context do
     # Don't check out a connection if a setup_all did so already
     if context[:sandbox_owner_pid] == nil do
-      pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Claper.Repo, shared: not context[:async])
+      pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Bludo.Repo, shared: not context[:async])
 
       on_exit(fn ->
-        drain_task_supervisor(Claper.TaskSupervisor)
+        drain_task_supervisor(Bludo.TaskSupervisor)
         Ecto.Adapters.SQL.Sandbox.stop_owner(pid)
       end)
     end
@@ -72,3 +72,5 @@ defmodule Claper.DataCase do
     end)
   end
 end
+
+

@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddHashedPasswordToUsers do
+defmodule Bludo.Repo.Migrations.AddHashedPasswordToUsers do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddHashedPasswordToUsers do
     end
   end
 end
+

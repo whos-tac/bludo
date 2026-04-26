@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddChatEnabledToPresentationStates do
+defmodule Bludo.Repo.Migrations.AddChatEnabledToPresentationStates do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddChatEnabledToPresentationStates do
     end
   end
 end
+

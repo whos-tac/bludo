@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateAuditLogs do
+defmodule Bludo.Repo.Migrations.CreateAuditLogs do
   use Ecto.Migration
 
   def change do
@@ -17,3 +17,4 @@ defmodule Claper.Repo.Migrations.CreateAuditLogs do
     create index(:audit_logs, [:user_id, :inserted_at])
   end
 end
+

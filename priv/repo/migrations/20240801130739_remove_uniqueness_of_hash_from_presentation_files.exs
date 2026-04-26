@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.RemoveUniquenessOfHashFromPresentationFiles do
+defmodule Bludo.Repo.Migrations.RemoveUniquenessOfHashFromPresentationFiles do
   use Ecto.Migration
 
   def up do
@@ -11,3 +11,4 @@ defmodule Claper.Repo.Migrations.RemoveUniquenessOfHashFromPresentationFiles do
     create unique_index(:presentation_files, [:hash])
   end
 end
+

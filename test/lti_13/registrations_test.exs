@@ -1,10 +1,10 @@
 defmodule Lti13.RegistrationsTest do
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Registrations
 
   import Lti13.JwksFixtures
-  import Claper.AccountsFixtures
+  import Bludo.AccountsFixtures
 
   describe "registrations" do
     test "create and get registration by issuer client id" do
@@ -31,3 +31,5 @@ defmodule Lti13.RegistrationsTest do
     end
   end
 end
+
+

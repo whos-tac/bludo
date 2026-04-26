@@ -1,7 +1,7 @@
-defmodule Claper.AuditFixtures do
+defmodule Bludo.AuditFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Audit` context.
+  entities via the `Bludo.Audit` context.
   """
 
   @doc """
@@ -16,8 +16,10 @@ defmodule Claper.AuditFixtures do
         resource_id: 42,
         resource_type: "some resource_type"
       })
-      |> Claper.Audit.create_log()
+      |> Bludo.Audit.create_log()
 
     log
   end
 end
+
+

@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateEvents do
+defmodule Bludo.Repo.Migrations.CreateEvents do
   use Ecto.Migration
 
   def change do
@@ -17,3 +17,4 @@ defmodule Claper.Repo.Migrations.CreateEvents do
     create index(:events, [:user_id])
   end
 end
+

@@ -63,7 +63,7 @@ defmodule Lti13.Tool.Services.AccessToken do
         "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
         "https://purl.imsglobal.org/spec/lti-ags/scope/score"
       ],
-      Application.get_env(:claper, ClaperWeb.Endpoint)[:url][:host]
+      Application.get_env(:bludo, BludoWeb.Endpoint)[:url][:host]
     )
   end
 
@@ -127,3 +127,6 @@ defmodule Lti13.Tool.Services.AccessToken do
   defp audience(auth_token_url, ""), do: auth_token_url
   defp audience(_auth_token_url, auth_audience), do: auth_audience
 end
+
+
+

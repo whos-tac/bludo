@@ -5,3 +5,6 @@ defprotocol Lti_1p3.Tool.MessageValidator do
   @spec validate(any) :: {:ok} | {:error, String.t()}
   def validate(jwt_body)
 end
+
+
+

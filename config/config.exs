@@ -7,23 +7,23 @@
 # General application configuration
 import Config
 
-config :claper,
-  ecto_repos: [Claper.Repo]
+config :bludo,
+  ecto_repos: [Bludo.Repo]
 
 # Configures the endpoint
-config :claper, ClaperWeb.Endpoint,
-  render_errors: [view: ClaperWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Claper.PubSub,
+config :bludo, BludoWeb.Endpoint,
+  render_errors: [view: BludoWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Bludo.PubSub,
   live_view: [signing_salt: "DN0vwriJgVkHG0kn3hF5JKho/DE66onv"]
 
-config :claper, ClaperWeb.Gettext,
+config :bludo, BludoWeb.Gettext,
   default_locale: "en",
   locales: ~w(fr en de es nl)
 
-config :claper, Oban,
+config :bludo, Oban,
   engine: Oban.Engines.Basic,
   queues: [default: 10, mailers: 20],
-  repo: Claper.Repo,
+  repo: Bludo.Repo,
   plugins: [
     {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(30)}
@@ -73,10 +73,12 @@ config :phoenix, :json_library, Jason
 
 config :porcelain, driver: Porcelain.Driver.Basic
 
-config :claper, :storage_dir, System.get_env("PRESENTATION_STORAGE_DIR", "priv/static")
+config :bludo, :storage_dir, System.get_env("PRESENTATION_STORAGE_DIR", "priv/static")
 
-config :flop, repo: Claper.Repo
+config :flop, repo: Bludo.Repo
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+

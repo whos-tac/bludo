@@ -4,24 +4,24 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - "claper-db:/var/lib/postgresql/data"
+      - "bludo-db:/var/lib/postgresql/data"
     healthcheck:
       test:
         - CMD
         - pg_isready
         - "-q"
         - "-d"
-        - "claper"
+        - "bludo"
         - "-U"
-        - "claper"
+        - "bludo"
       retries: 3
       timeout: 5s
     environment:
-      POSTGRES_PASSWORD: claper
-      POSTGRES_USER: claper
-      POSTGRES_DB: claper
+      POSTGRES_PASSWORD: bludo
+      POSTGRES_USER: bludo
+      POSTGRES_DB: bludo
     networks:
-      - claper-dev
+      - bludo-dev
   app:
     build:
       context: .
@@ -34,12 +34,12 @@ services:
     depends_on:
       - db
     networks:
-      - claper-dev
+      - bludo-dev
 
 volumes:
-  claper-db:
+  bludo-db:
     driver: local
 
 networks:
-  claper-dev:
+  bludo-dev:
     driver: bridge

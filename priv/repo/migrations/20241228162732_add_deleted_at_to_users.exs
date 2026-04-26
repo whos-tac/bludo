@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddDeletedAtToUsers do
+defmodule Bludo.Repo.Migrations.AddDeletedAtToUsers do
   use Ecto.Migration
 
   def change do
@@ -9,3 +9,4 @@ defmodule Claper.Repo.Migrations.AddDeletedAtToUsers do
     create index(:users, [:deleted_at])
   end
 end
+

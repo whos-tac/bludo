@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: claper-app
+  name: bludo-app
   labels:
-    app: claper
+    app: bludo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: claper
+      app: bludo
   template:
     metadata:
       labels:
-        app: claper
+        app: bludo
     spec:
-      serviceAccountName: sa-claper
+      serviceAccountName: sa-bludo
       containers:
-      - name: claper
-        image: ghcr.io/claperco/claper:latest
+      - name: bludo
+        image: ghcr.io/bludoco/bludo:latest
         imagePullPolicy: Always
         resources:
           requests:

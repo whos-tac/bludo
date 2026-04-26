@@ -1,13 +1,13 @@
-defmodule Claper.AuditTest do
-  use Claper.DataCase
+defmodule Bludo.AuditTest do
+  use Bludo.DataCase
 
-  alias Claper.Audit
+  alias Bludo.Audit
 
   describe "audit_logs" do
-    alias Claper.Audit.Log
+    alias Bludo.Audit.Log
 
-    import Claper.AuditFixtures
-    import Claper.AccountsFixtures
+    import Bludo.AuditFixtures
+    import Bludo.AccountsFixtures
 
     @invalid_attrs %{action: nil}
 
@@ -87,3 +87,5 @@ defmodule Claper.AuditTest do
     end
   end
 end
+
+

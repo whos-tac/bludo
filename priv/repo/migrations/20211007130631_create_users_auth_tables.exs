@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateUsersAuthTables do
+defmodule Bludo.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
   def change do
@@ -30,3 +30,4 @@ defmodule Claper.Repo.Migrations.CreateUsersAuthTables do
     create unique_index(:users_tokens, [:context, :token])
   end
 end
+

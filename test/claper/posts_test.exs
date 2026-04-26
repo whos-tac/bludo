@@ -1,11 +1,11 @@
-defmodule Claper.PostsTest do
-  use Claper.DataCase
+defmodule Bludo.PostsTest do
+  use Bludo.DataCase
 
-  alias Claper.Posts
+  alias Bludo.Posts
 
-  import Claper.{PostsFixtures, AccountsFixtures, EventsFixtures}
+  import Bludo.{PostsFixtures, AccountsFixtures, EventsFixtures}
 
-  alias Claper.Posts.Post
+  alias Bludo.Posts.Post
 
   describe "posts" do
     @invalid_attrs %{body: "a"}
@@ -76,9 +76,9 @@ defmodule Claper.PostsTest do
   end
 
   describe "reactions" do
-    alias Claper.Posts.Reaction
+    alias Bludo.Posts.Reaction
 
-    import Claper.PostsFixtures
+    import Bludo.PostsFixtures
 
     @invalid_attrs %{icon: nil, post: nil}
 
@@ -112,3 +112,5 @@ defmodule Claper.PostsTest do
     end
   end
 end
+
+

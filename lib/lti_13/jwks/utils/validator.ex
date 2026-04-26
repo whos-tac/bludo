@@ -79,7 +79,7 @@ defmodule Lti13.Jwks.Validator do
   end
 
   @spec validate_nonce(
-          Claper.Accounts.User.t(),
+          Bludo.Accounts.User.t(),
           map(),
           String.t()
         ) :: {:ok} | {:error, %{msg: any(), reason: :invalid_nonce}}
@@ -208,3 +208,6 @@ defmodule Lti13.Jwks.Validator do
 
   defp to_base64url(value), do: value
 end
+
+
+

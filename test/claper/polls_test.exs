@@ -1,12 +1,12 @@
-defmodule Claper.PollsTest do
-  use Claper.DataCase
+defmodule Bludo.PollsTest do
+  use Bludo.DataCase
 
-  alias Claper.Polls
+  alias Bludo.Polls
 
   describe "polls" do
-    alias Claper.Polls.Poll
+    alias Bludo.Polls.Poll
 
-    import Claper.{PollsFixtures, PresentationsFixtures}
+    import Bludo.{PollsFixtures, PresentationsFixtures}
 
     @invalid_attrs %{title: nil}
 
@@ -36,7 +36,7 @@ defmodule Claper.PollsTest do
 
       poll =
         poll_fixture(%{presentation_file_id: presentation_file.id})
-        |> Claper.Polls.set_percentages()
+        |> Bludo.Polls.set_percentages()
 
       fetched_poll = Polls.get_poll!(poll.id)
 
@@ -86,7 +86,7 @@ defmodule Claper.PollsTest do
                Polls.update_poll(presentation_file.event_id, poll, @invalid_attrs)
 
       fetched_poll = Polls.get_poll!(poll.id)
-      poll = poll |> Claper.Polls.set_percentages()
+      poll = poll |> Bludo.Polls.set_percentages()
 
       assert fetched_poll.poll_opts == poll.poll_opts
       assert fetched_poll.poll_votes == poll.poll_votes
@@ -130,7 +130,7 @@ defmodule Claper.PollsTest do
   end
 
   describe "poll_opts" do
-    import Claper.{PollsFixtures, PresentationsFixtures}
+    import Bludo.{PollsFixtures, PresentationsFixtures}
 
     test "add_poll_opt/1 returns poll changeset plus the added poll_opt" do
       presentation_file = presentation_file_fixture()
@@ -155,7 +155,7 @@ defmodule Claper.PollsTest do
   end
 
   describe "poll_votes" do
-    import Claper.{PollsFixtures, PresentationsFixtures}
+    import Bludo.{PollsFixtures, PresentationsFixtures}
 
     test "get_poll_vote/2 returns the poll_vote with given id and user id" do
       poll_vote = poll_vote_fixture()
@@ -177,3 +177,5 @@ defmodule Claper.PollsTest do
     end
   end
 end
+
+

@@ -26,7 +26,7 @@ defmodule Lti13.Registrations.Registration do
 
     has_many :deployments, Lti13.Deployments.Deployment
     belongs_to :tool_jwk, Lti13.Jwks.Jwk, foreign_key: :tool_jwk_id
-    belongs_to :user, Claper.Accounts.User
+    belongs_to :user, Bludo.Accounts.User
 
     timestamps()
   end
@@ -56,3 +56,6 @@ defmodule Lti13.Registrations.Registration do
     ])
   end
 end
+
+
+

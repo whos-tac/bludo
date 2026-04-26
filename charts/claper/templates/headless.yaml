@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: claper-svc-headless
+  name: bludo-svc-headless
 spec:
   ports:
     - port: 4369
@@ -9,5 +9,5 @@ spec:
       protocol: TCP
       name: epmd
   selector:
-    app: claper
+    app: bludo
   clusterIP: None

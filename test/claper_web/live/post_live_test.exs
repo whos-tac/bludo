@@ -1,8 +1,8 @@
-defmodule ClaperWeb.PostLiveTest do
-  use ClaperWeb.ConnCase
+defmodule BludoWeb.PostLiveTest do
+  use BludoWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Claper.{PresentationsFixtures, PostsFixtures}
+  import Bludo.{PresentationsFixtures, PostsFixtures}
 
   defp create_event(params) do
     presentation_file = presentation_file_fixture(%{user: params.user}, [:event])
@@ -22,3 +22,5 @@ defmodule ClaperWeb.PostLiveTest do
     end
   end
 end
+
+

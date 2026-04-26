@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: claper-svc
+  name: bludo-svc
   labels:
-    app: claper
+    app: bludo
 spec:
   type: ClusterIP
   ports:
@@ -14,4 +14,4 @@ spec:
     name: epmd
     targetPort: 4369
   selector:
-    app: claper
+    app: bludo

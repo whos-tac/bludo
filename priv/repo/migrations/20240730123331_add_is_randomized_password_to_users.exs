@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddIsRandomizedPasswordToUsers do
+defmodule Bludo.Repo.Migrations.AddIsRandomizedPasswordToUsers do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddIsRandomizedPasswordToUsers do
     end
   end
 end
+

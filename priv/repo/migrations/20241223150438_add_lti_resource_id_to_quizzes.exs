@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddLtiResourceIdToQuizzes do
+defmodule Bludo.Repo.Migrations.AddLtiResourceIdToQuizzes do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddLtiResourceIdToQuizzes do
     end
   end
 end
+

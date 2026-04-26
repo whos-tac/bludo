@@ -1,2 +1,4 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(Claper.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Bludo.Repo, :manual)
+
+

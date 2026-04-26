@@ -21,3 +21,6 @@ defmodule Lti13.Jwks.Jwk do
     |> validate_required([:pem, :typ, :alg, :kid])
   end
 end
+
+
+

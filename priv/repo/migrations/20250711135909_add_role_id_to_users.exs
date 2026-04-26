@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddRoleIdToUsers do
+defmodule Bludo.Repo.Migrations.AddRoleIdToUsers do
   use Ecto.Migration
 
   def change do
@@ -9,3 +9,4 @@ defmodule Claper.Repo.Migrations.AddRoleIdToUsers do
     create index(:users, [:role_id])
   end
 end
+

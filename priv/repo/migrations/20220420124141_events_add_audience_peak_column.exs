@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.PresentationFilesAddAudiencePeakColumn do
+defmodule Bludo.Repo.Migrations.PresentationFilesAddAudiencePeakColumn do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.PresentationFilesAddAudiencePeakColumn do
     end
   end
 end
+

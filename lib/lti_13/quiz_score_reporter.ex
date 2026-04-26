@@ -1,17 +1,17 @@
 defmodule Lti13.QuizScoreReporter do
-  alias Claper.Quizzes
+  alias Bludo.Quizzes
 
   def report_quiz_score(%Quizzes.Quiz{} = quiz, user_id) do
     quiz =
       quiz
-      |> Claper.Repo.preload(lti_resource: [:registration])
+      |> Bludo.Repo.preload(lti_resource: [:registration])
 
     if quiz.lti_resource do
       # Calculate score as percentage of correct answers
       score = calculate_score(quiz, user_id)
       timestamp = get_timestamp()
 
-      Claper.Workers.QuizLti.post_score(quiz.id, user_id, score, timestamp) |> Oban.insert()
+      Bludo.Workers.QuizLti.post_score(quiz.id, user_id, score, timestamp) |> Oban.insert()
     else
       # No LTI resource
       {:ok, quiz}
@@ -29,3 +29,6 @@ defmodule Lti13.QuizScoreReporter do
     DateTime.to_iso8601(dt)
   end
 end
+
+
+

@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.RemoveShowPollResultsEnabledFromPresentationStates do
+defmodule Bludo.Repo.Migrations.RemoveShowPollResultsEnabledFromPresentationStates do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.RemoveShowPollResultsEnabledFromPresentationSta
     end
   end
 end
+

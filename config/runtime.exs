@@ -1,5 +1,5 @@
 import Config
-import Claper.ConfigHelpers
+import Bludo.ConfigHelpers
 
 config_dir = System.get_env("CONFIG_DIR", "/run/secrets")
 
@@ -7,7 +7,7 @@ database_url =
   get_var_from_path_or_env(
     config_dir,
     "DATABASE_URL",
-    "postgres://claper:claper@localhost:5432/postgres"
+    "postgres://bludo:bludo@localhost:5432/postgres"
   )
 
 db_ssl = get_var_from_path_or_env(config_dir, "DB_SSL", "false") |> String.to_existing_atom()
@@ -30,13 +30,13 @@ port = get_int_from_path_or_env(config_dir, "PORT", "4000")
 
 secret_key_base = get_var_from_path_or_env(config_dir, "SECRET_KEY_BASE", nil)
 
-if System.get_env("MIX_ENV") == "prod" or Application.get_env(:claper, :server, false) do
+if System.get_env("MIX_ENV") == "prod" or Application.get_env(:bludo, :server, false) do
   case secret_key_base do
     nil ->
-      raise "SECRET_KEY_BASE configuration option is required. See https://docs.claper.co/configuration.html#production-docker"
+      raise "SECRET_KEY_BASE configuration option is required. See https://docs.bludo.co/configuration.html#production-docker"
 
     key when byte_size(key) < 32 ->
-      raise "SECRET_KEY_BASE must be at least 32 bytes long. See https://docs.claper.co/configuration.html#production-docker"
+      raise "SECRET_KEY_BASE must be at least 32 bytes long. See https://docs.bludo.co/configuration.html#production-docker"
 
     _ ->
       nil
@@ -45,10 +45,10 @@ end
 
 base_url = get_var_from_path_or_env(config_dir, "BASE_URL", "http://localhost:4000")
 
-if System.get_env("MIX_ENV") == "prod" or Application.get_env(:claper, :server, false) do
+if System.get_env("MIX_ENV") == "prod" or Application.get_env(:bludo, :server, false) do
   case base_url do
     nil ->
-      raise "BASE_URL configuration option is required. See https://docs.claper.co/configuration.html#production-docker"
+      raise "BASE_URL configuration option is required. See https://docs.bludo.co/configuration.html#production-docker"
 
     _ ->
       nil
@@ -57,7 +57,7 @@ end
 
 base_url = URI.parse(base_url)
 
-if System.get_env("MIX_ENV") == "prod" or Application.get_env(:claper, :server, false) do
+if System.get_env("MIX_ENV") == "prod" or Application.get_env(:bludo, :server, false) do
   if base_url.scheme not in ["http", "https"] do
     raise "BASE_URL must start with `http` or `https`. Currently configured as `#{System.get_env("BASE_URL")}`"
   end
@@ -169,7 +169,7 @@ languages =
   |> String.split(",")
   |> Enum.map(&String.trim/1)
 
-config :claper, :oidc,
+config :bludo, :oidc,
   enabled: oidc_enabled,
   issuer: oidc_issuer,
   client_id: oidc_client_id,
@@ -180,7 +180,7 @@ config :claper, :oidc,
   property_mappings: oidc_property_mappings,
   auto_redirect_login: oidc_auto_redirect_login
 
-config :claper, Claper.Repo,
+config :bludo, Bludo.Repo,
   url: database_url,
   ssl: db_ssl,
   ssl_opts: [
@@ -190,7 +190,7 @@ config :claper, Claper.Repo,
   pool_size: pool_size,
   queue_target: queue_target
 
-config :claper, ClaperWeb.Endpoint,
+config :bludo, BludoWeb.Endpoint,
   url: [scheme: base_url.scheme, host: base_url.host, path: base_url.path, port: base_url.port],
   base_url: base_url,
   http: [
@@ -204,7 +204,7 @@ config :claper, ClaperWeb.Endpoint,
   secure_cookie: secure_cookie,
   check_origin: false
 
-config :claper,
+config :bludo,
   enable_account_creation: enable_account_creation,
   email_confirmation: email_confirmation,
   allow_unlink_external_provider: allow_unlink_external_provider,
@@ -213,18 +213,18 @@ config :claper,
   remote_ip_proxies: remote_ip_proxies,
   remote_ip_headers: remote_ip_headers
 
-config :claper, :presentations,
+config :bludo, :presentations,
   max_file_size: max_file_size,
   storage: storage,
   s3_bucket: s3_bucket,
   resolution: get_var_from_path_or_env(config_dir, "GS_JPG_RESOLUTION", "300x300"),
   s3_public_url: s3_public_url
 
-config :claper, :mail,
-  from: get_var_from_path_or_env(config_dir, "MAIL_FROM", "noreply@claper.co"),
-  from_name: get_var_from_path_or_env(config_dir, "MAIL_FROM_NAME", "Claper")
+config :bludo, :mail,
+  from: get_var_from_path_or_env(config_dir, "MAIL_FROM", "noreply@Bludo.co"),
+  from_name: get_var_from_path_or_env(config_dir, "MAIL_FROM_NAME", "bludo")
 
-config :claper, ClaperWeb.MailboxGuard,
+config :bludo, BludoWeb.MailboxGuard,
   username: get_var_from_path_or_env(config_dir, "MAILBOX_USER", nil),
   password: get_var_from_path_or_env(config_dir, "MAILBOX_PASSWORD", nil),
   enabled:
@@ -241,7 +241,7 @@ case get_var_from_path_or_env(config_dir, "MAIL_TRANSPORT", "local") do
       get_var_from_path_or_env(config_dir, "SMTP_SSL_SERVER", relay)
       |> to_charlist()
 
-    config :claper, Claper.Mailer,
+    config :bludo, Bludo.Mailer,
       adapter: Swoosh.Adapters.SMTP,
       relay: relay,
       port: get_int_from_path_or_env(config_dir, "SMTP_PORT", 465),
@@ -274,14 +274,14 @@ case get_var_from_path_or_env(config_dir, "MAIL_TRANSPORT", "local") do
     config :swoosh, :api_client, false
 
   "postmark" ->
-    config :claper, Claper.Mailer,
+    config :bludo, Bludo.Mailer,
       adapter: Swoosh.Adapters.Postmark,
       api_key: get_var_from_path_or_env(config_dir, "POSTMARK_API_KEY", nil)
 
     config :swoosh, :api_client, Swoosh.ApiClient.Finch
 
   _ ->
-    config :claper, Claper.Mailer, adapter: Swoosh.Adapters.Local
+    config :bludo, Bludo.Mailer, adapter: Swoosh.Adapters.Local
     config :swoosh, :api_client, false
 end
 
@@ -295,3 +295,5 @@ if s3_scheme && s3_host do
   config :ex_aws,
     s3: [scheme: s3_scheme, host: s3_host, port: s3_port]
 end
+
+

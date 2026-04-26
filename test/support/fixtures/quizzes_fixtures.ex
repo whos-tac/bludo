@@ -1,10 +1,10 @@
-defmodule Claper.QuizzesFixtures do
+defmodule Bludo.QuizzesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Quizzes` context.
+  entities via the `Bludo.Quizzes` context.
   """
 
-  import Claper.PresentationsFixtures
+  import Bludo.PresentationsFixtures
 
   def quiz_fixture(attrs \\ %{}) do
     presentation_file = attrs[:presentation_file] || presentation_file_fixture()
@@ -37,7 +37,7 @@ defmodule Claper.QuizzesFixtures do
         lti_line_item_url: nil
       })
 
-    case Claper.Quizzes.create_quiz(attrs) do
+    case Bludo.Quizzes.create_quiz(attrs) do
       {:ok, quiz} ->
         quiz
 
@@ -46,3 +46,5 @@ defmodule Claper.QuizzesFixtures do
     end
   end
 end
+
+

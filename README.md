@@ -7,29 +7,29 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/ClaperCo/Claper">
+  <a href="https://github.com/bludoCo/bludo">
     <img src="priv/static/images/logo.png" alt="Logo" >
   </a>
 
-  <h3 align="center">Claper</h3>
+  <h3 align="center">bludo</h3>
 
   <p align="center">
     The ultimate tool to interact with your audience.
     <br />
-    <a href="https://docs.claper.co"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.bludo.co"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/ClaperCo/Claper/issues">Report Bug</a>
+    <a href="https://github.com/bludoCo/bludo/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ClaperCo/Claper/issues">Request Feature</a>
+    <a href="https://github.com/bludoCo/bludo/issues">Request Feature</a>
   </p>
 </div>
 
-[![Product Name Screen Shot][product-screenshot]](https://claper.co)
+[![Product Name Screen Shot][product-screenshot]](https://bludo.co)
 
-Claper turns your presentations into an interactive, engaging and exciting experience.
+bludo turns your presentations into an interactive, engaging and exciting experience.
 
-Claper has a two-sided mission:
+bludo has a two-sided mission:
 
 - The first one is to help these people presenting an idea or a message by giving them the opportunity to make their presentation unique and to have real-time feedback from their audience.
 - The second one is to help each participant to take their place, to be an actor in the presentation, in the meeting and to feel important and useful.
@@ -38,7 +38,7 @@ Supported languages: 🇬🇧 English, 🇫🇷 French, 🇩🇪 German, 🇪�
 
 ### Built With
 
-Claper is proudly powered by Phoenix and Elixir.
+bludo is proudly powered by Phoenix and Elixir.
 
 [![Phoenix][Phoenix]][Phoenix-url] [![Elixir][Elixir]][Elixir-url] [![Tailwind][Tailwind]][Tailwind-url]
 
@@ -48,7 +48,7 @@ Claper is proudly powered by Phoenix and Elixir.
 
 ## Documentation
 
-You can find all the instructions and configuration in [the documentation](https://docs.claper.co/).
+You can find all the instructions and configuration in [the documentation](https://docs.bludo.co/).
 
 ## Contributing
 
@@ -73,27 +73,27 @@ Distributed under the GPLv3 License. See `LICENSE.txt` for more information.
 
 ## Links
 
-[![](https://img.shields.io/badge/ClaperCo/Claper-000000?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/ClaperCo/Claper)
+[![](https://img.shields.io/badge/bludoCo/bludo-000000?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/bludoCo/bludo)
 
 [![](https://img.shields.io/badge/Discord-5052db?style=for-the-badge&logo=Discord&logoColor=white)](https://discord.gg/M7ejVaC9gA)
 
-[![](https://img.shields.io/badge//r/claper-ed491a?style=for-the-badge&logo=Reddit&logoColor=white)](https://reddit.com/r/claper)
+[![](https://img.shields.io/badge//r/bludo-ed491a?style=for-the-badge&logo=Reddit&logoColor=white)](https://reddit.com/r/bludo)
 
 [![](<https://img.shields.io/badge/Alex_Lion_(Founder)-000000?style=for-the-badge&logo=x&logoColor=white>)](https://x.com/alxlion_)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/ClaperCo/Claper.svg?style=for-the-badge
-[contributors-url]: https://github.com/ClaperCo/Claper/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/ClaperCo/Claper.svg?style=for-the-badge
-[forks-url]: https://github.com/ClaperCo/Claper/network/members
-[stars-shield]: https://img.shields.io/github/stars/ClaperCo/Claper.svg?style=for-the-badge
-[stars-url]: https://github.com/ClaperCo/Claper/stargazers
-[issues-shield]: https://img.shields.io/github/issues/ClaperCo/Claper.svg?style=for-the-badge
-[issues-url]: https://github.com/ClaperCo/Claper/issues
-[license-shield]: https://img.shields.io/github/license/ClaperCo/Claper.svg?style=for-the-badge
-[license-url]: https://github.com/ClaperCo/Claper/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/bludoCo/bludo.svg?style=for-the-badge
+[contributors-url]: https://github.com/bludoCo/bludo/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/bludoCo/bludo.svg?style=for-the-badge
+[forks-url]: https://github.com/bludoCo/bludo/network/members
+[stars-shield]: https://img.shields.io/github/stars/bludoCo/bludo.svg?style=for-the-badge
+[stars-url]: https://github.com/bludoCo/bludo/stargazers
+[issues-shield]: https://img.shields.io/github/issues/bludoCo/bludo.svg?style=for-the-badge
+[issues-url]: https://github.com/bludoCo/bludo/issues
+[license-shield]: https://img.shields.io/github/license/bludoCo/bludo.svg?style=for-the-badge
+[license-url]: https://github.com/bludoCo/bludo/blob/master/LICENSE.txt
 [product-screenshot]: /priv/static/images/preview.png
 [Elixir]: https://img.shields.io/badge/elixir-4B275F?style=for-the-badge&logo=elixir&logoColor=white
 [Elixir-url]: https://elixir-lang.org/

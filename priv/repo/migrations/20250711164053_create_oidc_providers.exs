@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateOidcProviders do
+defmodule Bludo.Repo.Migrations.CreateOidcProviders do
   use Ecto.Migration
 
   def change do
@@ -20,3 +20,4 @@ defmodule Claper.Repo.Migrations.CreateOidcProviders do
     create unique_index(:oidc_providers, [:issuer])
   end
 end
+

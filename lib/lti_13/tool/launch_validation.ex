@@ -121,11 +121,11 @@ defmodule Lti13.Tool.LaunchValidation do
   defp handle_existing_resource(resource, _, false), do: {:ok, resource}
 
   defp maybe_create_activity_leader(resource, lti_user) do
-    activity_leaders = Claper.Events.get_activity_leaders_for_event(resource.event_id)
+    activity_leaders = Bludo.Events.get_activity_leaders_for_event(resource.event_id)
     activity_leaders_emails = Enum.map(activity_leaders, fn al -> al.email end)
 
     if lti_user.email not in activity_leaders_emails && resource.event.user_id != lti_user.user_id do
-      Claper.Events.create_activity_leader(%{
+      Bludo.Events.create_activity_leader(%{
         email: lti_user.email,
         user_id: lti_user.id,
         event_id: resource.event_id
@@ -206,3 +206,6 @@ defmodule Lti13.Tool.LaunchValidation do
     end
   end
 end
+
+
+

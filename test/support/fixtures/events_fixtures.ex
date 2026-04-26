@@ -1,12 +1,12 @@
-defmodule Claper.EventsFixtures do
+defmodule Bludo.EventsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Events` context.
+  entities via the `Bludo.Events` context.
   """
 
-  import Claper.{AccountsFixtures}
+  import Bludo.{AccountsFixtures}
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate an activity leader.
@@ -23,9 +23,9 @@ defmodule Claper.EventsFixtures do
         email: assoc.user.email,
         event_id: assoc.event.id
       })
-      |> Claper.Events.create_activity_leader()
+      |> Bludo.Events.create_activity_leader()
 
-    Claper.UtilFixture.merge_preload(activity_leader, preload, assoc)
+    Bludo.UtilFixture.merge_preload(activity_leader, preload, assoc)
   end
 
   @doc """
@@ -44,8 +44,10 @@ defmodule Claper.EventsFixtures do
         started_at: NaiveDateTime.utc_now(),
         expired_at: nil
       })
-      |> Claper.Events.create_event()
+      |> Bludo.Events.create_event()
 
-    Claper.UtilFixture.merge_preload(event, preload, assoc)
+    Bludo.UtilFixture.merge_preload(event, preload, assoc)
   end
 end
+
+

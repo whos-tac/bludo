@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddMessageReactionEnabledToPresentationStates do
+defmodule Bludo.Repo.Migrations.AddMessageReactionEnabledToPresentationStates do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddMessageReactionEnabledToPresentationStates d
     end
   end
 end
+

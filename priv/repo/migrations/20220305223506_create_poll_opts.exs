@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreatePollOpts do
+defmodule Bludo.Repo.Migrations.CreatePollOpts do
   use Ecto.Migration
 
   def change do
@@ -11,3 +11,4 @@ defmodule Claper.Repo.Migrations.CreatePollOpts do
     end
   end
 end
+

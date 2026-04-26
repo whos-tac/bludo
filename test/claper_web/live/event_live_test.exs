@@ -1,8 +1,8 @@
-defmodule ClaperWeb.EventLiveTest do
-  use ClaperWeb.ConnCase
+defmodule BludoWeb.EventLiveTest do
+  use BludoWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Claper.{PresentationsFixtures}
+  import Bludo.{PresentationsFixtures}
 
   @update_attrs %{name: "some updated name"}
 
@@ -62,3 +62,5 @@ defmodule ClaperWeb.EventLiveTest do
     end
   end
 end
+
+

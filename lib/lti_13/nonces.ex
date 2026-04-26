@@ -1,6 +1,6 @@
 defmodule Lti13.Nonces do
   import Ecto.Query, warn: false
-  alias Claper.Repo
+  alias Bludo.Repo
   alias Lti13.Nonces.Nonce
 
   def get_nonce(value, domain \\ nil) do
@@ -25,3 +25,6 @@ defmodule Lti13.Nonces do
     Repo.delete_all(from(n in Nonce, where: n.inserted_at < ^nonce_expiry))
   end
 end
+
+
+

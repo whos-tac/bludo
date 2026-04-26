@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.RemoveIsAdminFromUsers do
+defmodule Bludo.Repo.Migrations.RemoveIsAdminFromUsers do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.RemoveIsAdminFromUsers do
     end
   end
 end
+

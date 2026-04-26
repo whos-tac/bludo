@@ -1,16 +1,16 @@
-defmodule ClaperWeb.UserAuthTest do
-  use ClaperWeb.ConnCase, async: true
+defmodule BludoWeb.UserAuthTest do
+  use BludoWeb.ConnCase, async: true
 
-  alias Claper.Accounts
-  alias ClaperWeb.UserAuth
-  import Claper.AccountsFixtures
+  alias Bludo.Accounts
+  alias BludoWeb.UserAuth
+  import Bludo.AccountsFixtures
 
-  @remember_me_cookie "_claper_web_user_remember_me"
+  @remember_me_cookie "_bludo_web_user_remember_me"
 
   setup %{conn: conn} do
     conn =
       conn
-      |> Map.replace!(:secret_key_base, ClaperWeb.Endpoint.config(:secret_key_base))
+      |> Map.replace!(:secret_key_base, BludoWeb.Endpoint.config(:secret_key_base))
       |> init_test_session(%{})
 
     %{user: user_fixture(), conn: conn}
@@ -65,7 +65,7 @@ defmodule ClaperWeb.UserAuthTest do
 
     test "broadcasts to the given live_socket_id", %{conn: conn} do
       live_socket_id = "users_sessions:abcdef-token"
-      ClaperWeb.Endpoint.subscribe(live_socket_id)
+      BludoWeb.Endpoint.subscribe(live_socket_id)
 
       conn
       |> put_session(:live_socket_id, live_socket_id)
@@ -169,3 +169,5 @@ defmodule ClaperWeb.UserAuthTest do
     end
   end
 end
+
+

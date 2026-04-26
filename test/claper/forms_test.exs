@@ -1,12 +1,12 @@
-defmodule Claper.FormsTest do
-  use Claper.DataCase
+defmodule Bludo.FormsTest do
+  use Bludo.DataCase
 
-  alias Claper.Forms
+  alias Bludo.Forms
 
   describe "forms" do
-    alias Claper.Forms.Form
+    alias Bludo.Forms.Form
 
-    import Claper.{FormsFixtures, PresentationsFixtures}
+    import Bludo.{FormsFixtures, PresentationsFixtures}
 
     @invalid_attrs %{title: nil}
 
@@ -126,7 +126,7 @@ defmodule Claper.FormsTest do
   end
 
   describe "form_submits" do
-    import Claper.{FormsFixtures, PresentationsFixtures, AccountsFixtures}
+    import Bludo.{FormsFixtures, PresentationsFixtures, AccountsFixtures}
 
     test "get_form_submit_for_event/2 returns form submit when it belongs to the event" do
       presentation_file = presentation_file_fixture()
@@ -169,7 +169,7 @@ defmodule Claper.FormsTest do
       presentation_file = presentation_file_fixture(%{}, [:event])
       f = form_fixture(%{presentation_file_id: presentation_file.id})
 
-      assert {:ok, %Claper.Forms.FormSubmit{}} =
+      assert {:ok, %Bludo.Forms.FormSubmit{}} =
                Forms.create_or_update_form_submit(
                  presentation_file.event_id,
                  %{
@@ -184,7 +184,7 @@ defmodule Claper.FormsTest do
       presentation_file = presentation_file_fixture(%{}, [:event])
       f = form_fixture(%{presentation_file_id: presentation_file.id})
 
-      assert {:ok, %Claper.Forms.FormSubmit{} = form_submit} =
+      assert {:ok, %Bludo.Forms.FormSubmit{} = form_submit} =
                Forms.create_or_update_form_submit(
                  presentation_file.event.uuid,
                  %{
@@ -213,7 +213,7 @@ defmodule Claper.FormsTest do
           }
         )
 
-      assert {:ok, %Claper.Forms.FormSubmit{} = updated_submit} =
+      assert {:ok, %Bludo.Forms.FormSubmit{} = updated_submit} =
                Forms.create_or_update_form_submit(
                  presentation_file.event.uuid,
                  %{
@@ -238,3 +238,5 @@ defmodule Claper.FormsTest do
     end
   end
 end
+
+

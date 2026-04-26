@@ -1,12 +1,12 @@
-defmodule ClaperWeb.Helpers.CSVExporterTest do
-  use Claper.DataCase
+defmodule BludoWeb.Helpers.CSVExporterTest do
+  use Bludo.DataCase
 
-  alias ClaperWeb.Helpers.CSVExporter
-  alias Claper.Accounts.User
-  alias Claper.Events.Event
-  alias Claper.Accounts.Oidc.Provider
-  alias Claper.Accounts.Role
-  alias Claper.Repo
+  alias BludoWeb.Helpers.CSVExporter
+  alias Bludo.Accounts.User
+  alias Bludo.Events.Event
+  alias Bludo.Accounts.Oidc.Provider
+  alias Bludo.Accounts.Role
+  alias Bludo.Repo
 
   defp role_fixture(name) do
     Repo.get_by(Role, name: name) || Repo.insert!(%Role{name: name})
@@ -224,3 +224,5 @@ defmodule ClaperWeb.Helpers.CSVExporterTest do
     end
   end
 end
+
+

@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateActivityLeaders do
+defmodule Bludo.Repo.Migrations.CreateActivityLeaders do
   use Ecto.Migration
 
   def change do
@@ -12,3 +12,4 @@ defmodule Claper.Repo.Migrations.CreateActivityLeaders do
     create unique_index(:activity_leaders, [:event_id, :email])
   end
 end
+

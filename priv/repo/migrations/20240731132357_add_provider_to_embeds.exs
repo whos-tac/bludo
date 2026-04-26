@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddProviderToEmbeds do
+defmodule Bludo.Repo.Migrations.AddProviderToEmbeds do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddProviderToEmbeds do
     end
   end
 end
+

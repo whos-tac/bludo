@@ -1,9 +1,9 @@
-defmodule Claper.Accounts.RoleTest do
-  use Claper.DataCase
+defmodule Bludo.Accounts.RoleTest do
+  use Bludo.DataCase
 
-  alias Claper.Accounts
-  alias Claper.Accounts.{User, Role}
-  alias Claper.Repo
+  alias Bludo.Accounts
+  alias Bludo.Accounts.{User, Role}
+  alias Bludo.Repo
 
   defp role_fixture(name) do
     Accounts.get_role_by_name(name) ||
@@ -147,3 +147,5 @@ defmodule Claper.Accounts.RoleTest do
     end
   end
 end
+
+

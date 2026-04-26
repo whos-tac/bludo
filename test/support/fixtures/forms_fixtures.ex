@@ -1,12 +1,12 @@
-defmodule Claper.FormsFixtures do
+defmodule Bludo.FormsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Forms` context.
+  entities via the `Bludo.Forms` context.
   """
 
-  import Claper.{AccountsFixtures, PresentationsFixtures}
+  import Bludo.{AccountsFixtures, PresentationsFixtures}
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate a form.
@@ -20,9 +20,9 @@ defmodule Claper.FormsFixtures do
         enabled: true,
         fields: [%{name: "Name", type: "text"}]
       })
-      |> Claper.Forms.create_form()
+      |> Bludo.Forms.create_form()
 
-    Claper.UtilFixture.merge_preload(form, preload, %{})
+    Bludo.UtilFixture.merge_preload(form, preload, %{})
   end
 
   @doc """
@@ -40,8 +40,10 @@ defmodule Claper.FormsFixtures do
         user_id: user_fixture().id,
         response: %{"Test" => "some option 1", "Test2" => "some option 2"}
       })
-      |> Claper.Forms.create_form_submit()
+      |> Bludo.Forms.create_form_submit()
 
     form_submit
   end
 end
+
+

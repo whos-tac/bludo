@@ -19,7 +19,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ghcr.io/claperco/claper
+        images: ghcr.io/bludoco/bludo
         tags: |
           type=ref,event=branch
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}

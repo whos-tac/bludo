@@ -1,4 +1,4 @@
-defmodule ClaperWeb.ConnCase do
+defmodule BludoWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule ClaperWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use ClaperWeb.ConnCase, async: true`, although
+  by setting `use BludoWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -19,26 +19,26 @@ defmodule ClaperWeb.ConnCase do
 
   using do
     quote do
-      use ClaperWeb, :verified_routes
+      use BludoWeb, :verified_routes
 
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import ClaperWeb.ConnCase
+      import BludoWeb.ConnCase
       import Ecto.Query
 
-      alias ClaperWeb.Router.Helpers, as: Routes
+      alias BludoWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint ClaperWeb.Endpoint
+      @endpoint BludoWeb.Endpoint
     end
   end
 
   setup tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Claper.Repo, shared: not tags[:async])
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Bludo.Repo, shared: not tags[:async])
 
     on_exit(fn ->
-      drain_task_supervisor(Claper.TaskSupervisor)
+      drain_task_supervisor(Bludo.TaskSupervisor)
       Ecto.Adapters.SQL.Sandbox.stop_owner(pid)
     end)
 
@@ -68,7 +68,7 @@ defmodule ClaperWeb.ConnCase do
   test context.
   """
   def register_and_log_in_user(%{conn: conn}) do
-    user = Claper.AccountsFixtures.confirmed_user_fixture()
+    user = Bludo.AccountsFixtures.confirmed_user_fixture()
     %{conn: log_in_user(conn, user), user: user}
   end
 
@@ -78,7 +78,7 @@ defmodule ClaperWeb.ConnCase do
   It returns an updated `conn`.
   """
   def log_in_user(conn, user) do
-    token = Claper.Accounts.generate_user_session_token(user)
+    token = Bludo.Accounts.generate_user_session_token(user)
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
@@ -86,3 +86,5 @@ defmodule ClaperWeb.ConnCase do
     |> Plug.Conn.put_session(:user_token, token)
   end
 end
+
+

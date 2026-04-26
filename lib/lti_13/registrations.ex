@@ -1,7 +1,7 @@
 defmodule Lti13.Registrations do
   import Ecto.Query, warn: false
   alias Lti13.Deployments.Deployment
-  alias Claper.Repo
+  alias Bludo.Repo
   alias Lti13.Registrations.Registration
 
   def create_registration(attrs) do
@@ -38,3 +38,6 @@ defmodule Lti13.Registrations do
     )
   end
 end
+
+
+

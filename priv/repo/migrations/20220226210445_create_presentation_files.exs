@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreatePresentationFiles do
+defmodule Bludo.Repo.Migrations.CreatePresentationFiles do
   use Ecto.Migration
 
   def change do
@@ -14,3 +14,4 @@ defmodule Claper.Repo.Migrations.CreatePresentationFiles do
     create unique_index(:presentation_files, [:hash])
   end
 end
+

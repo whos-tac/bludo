@@ -6,7 +6,7 @@ import Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :claper, ClaperWeb.Endpoint,
+config :bludo, BludoWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -23,13 +23,13 @@ config :claper, ClaperWeb.Endpoint,
   ]
 
 # Watch static and templates for browser reloading.
-config :claper, ClaperWeb.Endpoint,
+config :bludo, BludoWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/claper_web/(live|views)/.*(ex)$",
-      ~r"lib/claper_web/templates/.*(eex)$",
+      ~r"lib/bludo_web/(live|views)/.*(ex)$",
+      ~r"lib/bludo_web/templates/.*(eex)$",
       ~r"assets/.*\.(js|css)$"
     ]
   ]
@@ -43,3 +43,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+

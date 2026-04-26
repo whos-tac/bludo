@@ -1,11 +1,11 @@
-defmodule Claper.MixProject do
+defmodule Bludo.MixProject do
   use Mix.Project
 
   @version "2.5.0"
 
   def project do
     [
-      app: :claper,
+      app: :bludo,
       version: @version,
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -21,36 +21,36 @@ defmodule Claper.MixProject do
         logo: "priv/static/images/bulme-logo-full.png",
         groups_for_modules: [
           "User management": [
-            ~r/Claper\.Account\.?/,
-            ~r/ClaperWeb\.UserRegistration\.?/,
-            ~r/ClaperWeb\.UserSession\.?/,
-            ~r/ClaperWeb\.UserLiveAuth\.?/,
-            ~r/ClaperWeb\.UserConfirmation\.?/,
-            ~r/ClaperWeb\.UserSettings\.?/,
-            ~r/ClaperWeb\.UserReset\.?/,
-            ~r/ClaperWeb\.Attendee\.?/,
-            ~r/ClaperWeb\.UserAuth\.?/,
-            ~r/ClaperWeb\.UserView\.?/
+            ~r/bludo\.Account\.?/,
+            ~r/BludoWeb\.UserRegistration\.?/,
+            ~r/BludoWeb\.UserSession\.?/,
+            ~r/BludoWeb\.UserLiveAuth\.?/,
+            ~r/BludoWeb\.UserConfirmation\.?/,
+            ~r/BludoWeb\.UserSettings\.?/,
+            ~r/BludoWeb\.UserReset\.?/,
+            ~r/BludoWeb\.Attendee\.?/,
+            ~r/BludoWeb\.UserAuth\.?/,
+            ~r/BludoWeb\.UserView\.?/
           ],
           Events: [
-            ~r/Claper\.Event\.?/,
-            ~r/ClaperWeb\.Event\.?/
+            ~r/bludo\.Event\.?/,
+            ~r/BludoWeb\.Event\.?/
           ],
           Forms: [
-            ~r/Claper\.Forms\.?/,
-            ~r/ClaperWeb\.Form\.?/
+            ~r/bludo\.Forms\.?/,
+            ~r/BludoWeb\.Form\.?/
           ],
           WebContent: [
-            ~r/Claper\.Embed\.?/,
-            ~r/ClaperWeb\.Embed\.?/
+            ~r/bludo\.Embed\.?/,
+            ~r/BludoWeb\.Embed\.?/
           ],
           Polls: [
-            ~r/Claper\.Polls\.?/,
-            ~r/ClaperWeb\.Poll\.?/
+            ~r/bludo\.Polls\.?/,
+            ~r/BludoWeb\.Poll\.?/
           ],
           Posts: [
-            ~r/Claper\.Posts\.?/,
-            ~r/ClaperWeb\.Post\.?/
+            ~r/bludo\.Posts\.?/,
+            ~r/BludoWeb\.Post\.?/
           ]
         ]
       ]
@@ -62,7 +62,7 @@ defmodule Claper.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Claper.Application, []},
+      mod: {Bludo.Application, []},
       extra_applications: [:logger, :runtime_tools, :ssl, :porcelain]
     ]
   end
@@ -145,3 +145,4 @@ defmodule Claper.MixProject do
     ]
   end
 end
+

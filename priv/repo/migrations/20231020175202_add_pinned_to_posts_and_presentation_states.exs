@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddPinnedToPostsAndPresentationStates do
+defmodule Bludo.Repo.Migrations.AddPinnedToPostsAndPresentationStates do
   use Ecto.Migration
 
   def change do
@@ -11,3 +11,4 @@ defmodule Claper.Repo.Migrations.AddPinnedToPostsAndPresentationStates do
     end
   end
 end
+

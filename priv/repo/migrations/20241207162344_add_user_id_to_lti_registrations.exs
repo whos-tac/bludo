@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddUserIdToLtiRegistrations do
+defmodule Bludo.Repo.Migrations.AddUserIdToLtiRegistrations do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddUserIdToLtiRegistrations do
     end
   end
 end
+

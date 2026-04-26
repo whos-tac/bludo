@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddOidcUsers do
+defmodule Bludo.Repo.Migrations.AddOidcUsers do
   use Ecto.Migration
 
   def change do
@@ -22,3 +22,4 @@ defmodule Claper.Repo.Migrations.AddOidcUsers do
     end
   end
 end
+

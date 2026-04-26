@@ -1,12 +1,12 @@
-defmodule Claper.PostsFixtures do
+defmodule Bludo.PostsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Posts` context.
+  entities via the `Bludo.Posts` context.
   """
 
-  import Claper.{AccountsFixtures, EventsFixtures}
+  import Bludo.{AccountsFixtures, EventsFixtures}
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate a post.
@@ -17,7 +17,7 @@ defmodule Claper.PostsFixtures do
     assoc = %{user: user, event: event}
 
     {:ok, post} =
-      Claper.Posts.create_post(
+      Bludo.Posts.create_post(
         assoc.event,
         attrs
         |> Enum.into(%{
@@ -29,7 +29,7 @@ defmodule Claper.PostsFixtures do
         })
       )
 
-    Claper.UtilFixture.merge_preload(post, preload, assoc)
+    Bludo.UtilFixture.merge_preload(post, preload, assoc)
   end
 
   @doc """
@@ -41,8 +41,10 @@ defmodule Claper.PostsFixtures do
       |> Enum.into(%{
         icon: "some icon"
       })
-      |> Claper.Posts.create_reaction()
+      |> Bludo.Posts.create_reaction()
 
     reaction
   end
 end
+
+

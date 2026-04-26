@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateQuizzes do
+defmodule Bludo.Repo.Migrations.CreateQuizzes do
   use Ecto.Migration
 
   def change do
@@ -48,3 +48,4 @@ defmodule Claper.Repo.Migrations.CreateQuizzes do
     create index(:quiz_responses, [:user_id])
   end
 end
+

@@ -56,16 +56,16 @@ mix assets.deploy
 
 ## High-Level Architecture
 
-Claper is an interactive presentation platform built with Phoenix Framework and Elixir. It enables real-time audience interaction during presentations through polls, forms, messages, and quizzes.
+bludo is an interactive presentation platform built with Phoenix Framework and Elixir. It enables real-time audience interaction during presentations through polls, forms, messages, and quizzes.
 
 ### Core Components
 
 1. **Phoenix LiveView Architecture**
    - Real-time updates without JavaScript through WebSocket connections
-   - LiveView modules in `lib/claper_web/live/` handle interactive UI
+   - LiveView modules in `lib/bludo_web/live/` handle interactive UI
    - Presence tracking for real-time user counts
 
-2. **Main Domain Contexts** (in `lib/claper/`)
+2. **Main Domain Contexts** (in `lib/bludo/`)
    - `Accounts` - User management, authentication, OIDC integration
    - `Events` - Core presentation/event management
    - `Posts` - Audience messages and reactions

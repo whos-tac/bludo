@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreatePollVotes do
+defmodule Bludo.Repo.Migrations.CreatePollVotes do
   use Ecto.Migration
 
   def change do
@@ -15,3 +15,4 @@ defmodule Claper.Repo.Migrations.CreatePollVotes do
     create unique_index(:poll_votes, [:poll_id, :attendee_identifier])
   end
 end
+

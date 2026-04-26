@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateReactions do
+defmodule Bludo.Repo.Migrations.CreateReactions do
   use Ecto.Migration
 
   def change do
@@ -15,3 +15,4 @@ defmodule Claper.Repo.Migrations.CreateReactions do
     create unique_index(:reactions, [:icon, :post_id, :attendee_identifier])
   end
 end
+

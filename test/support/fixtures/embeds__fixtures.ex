@@ -1,10 +1,10 @@
-defmodule Claper.EmbedsFixtures do
+defmodule Bludo.EmbedsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Embeds` context.
+  entities via the `Bludo.Embeds` context.
   """
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate a embed.
@@ -21,9 +21,9 @@ defmodule Claper.EmbedsFixtures do
         enabled: true,
         attendee_visibility: true
       })
-      |> Claper.Embeds.create_embed()
+      |> Bludo.Embeds.create_embed()
 
-    Claper.UtilFixture.merge_preload(embed, preload, %{})
+    Bludo.UtilFixture.merge_preload(embed, preload, %{})
   end
 
   def embed_youtube_fixture(attrs \\ %{}, preload \\ []) do
@@ -37,8 +37,10 @@ defmodule Claper.EmbedsFixtures do
         enabled: true,
         attendee_visibility: true
       })
-      |> Claper.Embeds.create_embed()
+      |> Bludo.Embeds.create_embed()
 
-    Claper.UtilFixture.merge_preload(embed, preload, %{})
+    Bludo.UtilFixture.merge_preload(embed, preload, %{})
   end
 end
+
+

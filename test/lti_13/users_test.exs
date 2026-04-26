@@ -1,30 +1,30 @@
 defmodule Lti13.UsersTest do
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Users
   alias Lti13.Users.User
 
   import Lti13.RegistrationsFixtures
-  import Claper.AccountsFixtures
+  import Bludo.AccountsFixtures
 
   # :sub, :name, :email, :roles, :user_id, :registration_id
   describe "users" do
     setup do
-      claper_user = user_fixture()
+      bludo_user = user_fixture()
       registration = registration_fixture()
-      %{registration: registration, claper_user: claper_user}
+      %{registration: registration, bludo_user: bludo_user}
     end
 
     test "create_user/1 creates a new user", %{
       registration: registration,
-      claper_user: claper_user
+      bludo_user: bludo_user
     } do
       attrs = %{
         sub: "a6d5c443-1f51-4783-ba1a-7686ffe3b54a",
         name: "John Doe",
         email: "john@example.com",
         roles: ["role1", "role2"],
-        user_id: claper_user.id,
+        user_id: bludo_user.id,
         registration_id: registration.id
       }
 
@@ -34,20 +34,20 @@ defmodule Lti13.UsersTest do
       assert user.name == attrs.name
       assert user.email == attrs.email
       assert user.roles == attrs.roles
-      assert user.user_id == claper_user.id
+      assert user.user_id == bludo_user.id
       assert user.registration_id == registration.id
     end
 
     test "get_user_by_sub/1 returns the user with matching sub", %{
       registration: registration,
-      claper_user: claper_user
+      bludo_user: bludo_user
     } do
       attrs = %{
         sub: "a6d5c443-1f51-4783-ba1a-7686ffe3b54a",
         name: "John Doe",
         email: "john@example.com",
         roles: ["role1", "role2"],
-        user_id: claper_user.id,
+        user_id: bludo_user.id,
         registration_id: registration.id
       }
 
@@ -61,13 +61,13 @@ defmodule Lti13.UsersTest do
 
     test "get_or_create_user/1 creates a new user if not found", %{
       registration: registration,
-      claper_user: claper_user
+      bludo_user: bludo_user
     } do
       attrs = %{
         sub: "a6d5c443-1f51-4783-ba1a-7686ffe3b54a",
         name: "John Doe",
         roles: ["role1", "role2"],
-        email: claper_user.email,
+        email: bludo_user.email,
         registration_id: registration.id
       }
 
@@ -77,21 +77,21 @@ defmodule Lti13.UsersTest do
       assert user.name
       assert user.email == attrs.email
       assert user.roles == attrs.roles
-      assert user.user_id == claper_user.id
+      assert user.user_id == bludo_user.id
       assert user.registration_id == registration.id
     end
 
     test "get_or_create_user/1 returns existing user if found", %{
       registration: registration,
-      claper_user: claper_user
+      bludo_user: bludo_user
     } do
       attrs = %{
         sub: "a6d5c443-1f51-4783-ba1a-7686ffe3b54a",
         name: "John Doe",
         roles: ["role1", "role2"],
-        email: claper_user.email,
+        email: bludo_user.email,
         registration_id: registration.id,
-        user_id: claper_user.id
+        user_id: bludo_user.id
       }
 
       {:ok, %User{} = user} = Users.create_user(attrs)
@@ -101,3 +101,5 @@ defmodule Lti13.UsersTest do
     end
   end
 end
+
+

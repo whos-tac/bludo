@@ -20,7 +20,7 @@ defmodule Lti13.Users.User do
     field :email, :string
     field :roles, {:array, :string}
 
-    belongs_to :user, Claper.Accounts.User
+    belongs_to :user, Bludo.Accounts.User
     belongs_to :registration, Lti13.Registrations.Registration
 
     timestamps()
@@ -41,3 +41,6 @@ defmodule Lti13.Users.User do
     |> unique_constraint(:sub)
   end
 end
+
+
+

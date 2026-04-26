@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddTimezoneAndLocaleToUsers do
+defmodule Bludo.Repo.Migrations.AddTimezoneAndLocaleToUsers do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddTimezoneAndLocaleToUsers do
     end
   end
 end
+

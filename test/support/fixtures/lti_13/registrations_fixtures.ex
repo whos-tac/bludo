@@ -5,7 +5,7 @@ defmodule Lti13.RegistrationsFixtures do
   """
 
   import Lti13.JwksFixtures
-  import Claper.AccountsFixtures
+  import Bludo.AccountsFixtures
 
   @doc """
   Generate a registration.
@@ -31,3 +31,5 @@ defmodule Lti13.RegistrationsFixtures do
     registration
   end
 end
+
+

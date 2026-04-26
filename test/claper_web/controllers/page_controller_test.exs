@@ -1,8 +1,10 @@
-defmodule ClaperWeb.PageControllerTest do
-  use ClaperWeb.ConnCase
+defmodule BludoWeb.PageControllerTest do
+  use BludoWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
     assert html_response(conn, 200) =~ "About"
   end
 end
+
+

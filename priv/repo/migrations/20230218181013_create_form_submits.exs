@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateFormSubmits do
+defmodule Bludo.Repo.Migrations.CreateFormSubmits do
   use Ecto.Migration
 
   def change do
@@ -15,3 +15,4 @@ defmodule Claper.Repo.Migrations.CreateFormSubmits do
     create index(:form_submits, [:form_id, :attendee_identifier])
   end
 end
+

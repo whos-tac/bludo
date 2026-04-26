@@ -2,7 +2,7 @@
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:
-      name: claper-secret
+      name: bludo-secret
       key: secret-key-base
 - name: POD_IP
   valueFrom:
@@ -13,9 +13,9 @@
     fieldRef:
       fieldPath: metadata.namespace
 - name: ENDPOINT_HOST
-  value: claper.co
+  value: bludo.co
 - name: DATABASE_URL
-  value: postgresql://claper:claper@10.0.0.6:6432/claper
+  value: postgresql://bludo:bludo@10.0.0.6:6432/bludo
 - name: S3_ACCESS_KEY_ID
   value: XXX
 - name: S3_BUCKET

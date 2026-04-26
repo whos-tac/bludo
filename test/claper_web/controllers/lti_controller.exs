@@ -1,5 +1,5 @@
-defmodule ClaperWeb.LtiControllerTest do
-  use ClaperWeb.ConnCase, async: true
+defmodule BludoWeb.LtiControllerTest do
+  use BludoWeb.ConnCase, async: true
 
   describe "GET /.well-known/jwks.json" do
     test "returns the public key", %{conn: conn} do
@@ -36,3 +36,5 @@ defmodule ClaperWeb.LtiControllerTest do
     end
   end
 end
+
+

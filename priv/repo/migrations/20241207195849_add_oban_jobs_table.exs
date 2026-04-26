@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddObanJobsTable do
+defmodule Bludo.Repo.Migrations.AddObanJobsTable do
   use Ecto.Migration
 
   def up do
@@ -11,3 +11,4 @@ defmodule Claper.Repo.Migrations.AddObanJobsTable do
     Oban.Migration.down(version: 1)
   end
 end
+

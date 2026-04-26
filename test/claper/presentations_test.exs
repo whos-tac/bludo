@@ -1,12 +1,12 @@
-defmodule Claper.PresentationsTest do
-  use Claper.DataCase
+defmodule Bludo.PresentationsTest do
+  use Bludo.DataCase
 
-  alias Claper.Presentations
+  alias Bludo.Presentations
 
   describe "presentation_files" do
-    alias Claper.Presentations.PresentationFile
+    alias Bludo.Presentations.PresentationFile
 
-    import Claper.PresentationsFixtures
+    import Bludo.PresentationsFixtures
 
     test "get_presentation_file!/2 returns the presentation_file with given id" do
       presentation_file = presentation_file_fixture()
@@ -43,9 +43,9 @@ defmodule Claper.PresentationsTest do
   end
 
   describe "presentation_states" do
-    alias Claper.Presentations.PresentationState
+    alias Bludo.Presentations.PresentationState
 
-    import Claper.PresentationsFixtures
+    import Bludo.PresentationsFixtures
 
     test "create_presentation_state/1 with valid data creates a presentation_state" do
       valid_attrs = %{}
@@ -62,3 +62,5 @@ defmodule Claper.PresentationsTest do
     end
   end
 end
+
+

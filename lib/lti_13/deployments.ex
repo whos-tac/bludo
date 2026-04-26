@@ -1,6 +1,6 @@
 defmodule Lti13.Deployments do
   import Ecto.Query, warn: false
-  alias Claper.Repo
+  alias Bludo.Repo
   alias Lti13.Deployments.Deployment
 
   @doc """
@@ -35,3 +35,6 @@ defmodule Lti13.Deployments do
     )
   end
 end
+
+
+

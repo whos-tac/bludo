@@ -1,12 +1,12 @@
-defmodule Claper.QuizzesTest do
-  use Claper.DataCase
+defmodule Bludo.QuizzesTest do
+  use Bludo.DataCase
 
-  alias Claper.Quizzes
-  alias Claper.Quizzes.Quiz
+  alias Bludo.Quizzes
+  alias Bludo.Quizzes.Quiz
 
-  import Claper.QuizzesFixtures
-  import Claper.PresentationsFixtures
-  import Claper.AccountsFixtures
+  import Bludo.QuizzesFixtures
+  import Bludo.PresentationsFixtures
+  import Bludo.AccountsFixtures
 
   describe "quizzes" do
     test "list_quizzes/1 returns all quizzes for a presentation file" do
@@ -232,3 +232,5 @@ defmodule Claper.QuizzesTest do
     end
   end
 end
+
+

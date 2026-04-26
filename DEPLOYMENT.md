@@ -1,6 +1,6 @@
 # Bludo Deployment Guide (LAN & WAN)
 
-This guide covers the deployment of **Bludo** (formerly Claper) for the **BÜRGERMEISTER HEARING 2026** at the BULME institute. The platform has been configured to support both local LAN access (e.g., via IP address `192.168.x.x`) and public WAN access (e.g., via a port-forwarded DNS like `https://hearing.bulme.at`) simultaneously.
+This guide covers the deployment of **Bludo** (formerly bludo) for the **BÜRGERMEISTER HEARING 2026** at the BULME institute. The platform has been configured to support both local LAN access (e.g., via IP address `192.168.x.x`) and public WAN access (e.g., via a port-forwarded DNS like `https://hearing.bulme.at`) simultaneously.
 
 ## 1. Prerequisites
 

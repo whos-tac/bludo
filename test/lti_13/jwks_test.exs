@@ -1,5 +1,5 @@
 defmodule Lti13.JwksTest do
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Jwks.Jwk
 
@@ -79,3 +79,5 @@ defmodule Lti13.JwksTest do
     end
   end
 end
+
+

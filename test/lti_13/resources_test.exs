@@ -1,12 +1,12 @@
 defmodule Lti13.ResourcesTest do
   alias Lti13.Resources
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Resources
   alias Lti13.Resources.Resource
 
   import Lti13.RegistrationsFixtures
-  import Claper.EventsFixtures
+  import Bludo.EventsFixtures
 
   describe "resources" do
     setup do
@@ -70,7 +70,7 @@ defmodule Lti13.ResourcesTest do
       registration: registration
     } do
       {:ok, user} =
-        Claper.Accounts.create_user(%{email: "test@example.com", password: "password123"})
+        Bludo.Accounts.create_user(%{email: "test@example.com", password: "password123"})
 
       lti_user = %Lti13.Users.User{
         user_id: user.id,
@@ -84,7 +84,7 @@ defmodule Lti13.ResourcesTest do
         lti_user: lti_user
       }
 
-      assert {:ok, %Resource{event: %Claper.Events.Event{} = event} = resource} =
+      assert {:ok, %Resource{event: %Bludo.Events.Event{} = event} = resource} =
                Resources.create_resource_with_event(attrs)
 
       assert resource.title == "Resource 1"
@@ -95,7 +95,7 @@ defmodule Lti13.ResourcesTest do
 
     test "create_resource_with_event/1 with invalid attributes", %{registration: registration} do
       {:ok, user} =
-        Claper.Accounts.create_user(%{email: "test@example.com", password: "password123"})
+        Bludo.Accounts.create_user(%{email: "test@example.com", password: "password123"})
 
       lti_user = %Lti13.Users.User{
         user_id: user.id,
@@ -114,3 +114,5 @@ defmodule Lti13.ResourcesTest do
     end
   end
 end
+
+

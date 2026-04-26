@@ -1,7 +1,7 @@
-defmodule Claper.AccountsFixtures do
+defmodule Bludo.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Accounts` context.
+  entities via the `Bludo.Accounts` context.
   """
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
@@ -26,7 +26,7 @@ defmodule Claper.AccountsFixtures do
     {:ok, user} =
       attrs
       |> no_valid_user_attributes()
-      |> Claper.Accounts.register_user()
+      |> Bludo.Accounts.register_user()
 
     user
   end
@@ -35,8 +35,10 @@ defmodule Claper.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> Claper.Accounts.register_user()
+      |> Bludo.Accounts.register_user()
 
     user
   end
 end
+
+

@@ -1,12 +1,12 @@
-defmodule Claper.EmbedsTest do
-  use Claper.DataCase
+defmodule Bludo.EmbedsTest do
+  use Bludo.DataCase
 
-  alias Claper.Embeds
+  alias Bludo.Embeds
 
   describe "embeds" do
-    alias Claper.Embeds.Embed
+    alias Bludo.Embeds.Embed
 
-    import Claper.{EmbedsFixtures, PresentationsFixtures}
+    import Bludo.{EmbedsFixtures, PresentationsFixtures}
 
     @invalid_attrs %{title: nil, content: nil}
 
@@ -161,3 +161,5 @@ defmodule Claper.EmbedsTest do
     end
   end
 end
+
+

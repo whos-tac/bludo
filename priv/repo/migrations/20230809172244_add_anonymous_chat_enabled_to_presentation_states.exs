@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddAnonymousChatEnabledToPresentationStates do
+defmodule Bludo.Repo.Migrations.AddAnonymousChatEnabledToPresentationStates do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddAnonymousChatEnabledToPresentationStates do
     end
   end
 end
+

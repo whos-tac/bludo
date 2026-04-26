@@ -1,0 +1,62 @@
+defmodule BludoWeb.Notifiers.UserNotifier do
+  use Phoenix.Swoosh, view: BludoWeb.UserNotifierView, layout: {BludoWeb.LayoutView, :email}
+  use Gettext, backend: BludoWeb.Gettext
+
+  def magic(email, url) do
+    new()
+    |> to(email)
+    |> from(
+      {Application.get_env(:bludo, :mail) |> Keyword.get(:from_name),
+       Application.get_env(:bludo, :mail) |> Keyword.get(:from)}
+    )
+    |> subject(gettext("Connect to bludo"))
+    |> render_body("magic.html", %{url: url})
+  end
+
+  def welcome(email) do
+    new()
+    |> to(email)
+    |> from(
+      {Application.get_env(:bludo, :mail) |> Keyword.get(:from_name),
+       Application.get_env(:bludo, :mail) |> Keyword.get(:from)}
+    )
+    |> subject(gettext("Next steps to boost your presentations"))
+    |> render_body("welcome.html", %{email: email})
+  end
+
+  def update_email(new_email, url) do
+    new()
+    |> to(new_email)
+    |> from(
+      {Application.get_env(:bludo, :mail) |> Keyword.get(:from_name),
+       Application.get_env(:bludo, :mail) |> Keyword.get(:from)}
+    )
+    |> subject(gettext("Update email instructions"))
+    |> render_body("change.html", %{url: url})
+  end
+
+  def confirm(user, url) do
+    new()
+    |> to(user.email)
+    |> from(
+      {Application.get_env(:bludo, :mail) |> Keyword.get(:from_name),
+       Application.get_env(:bludo, :mail) |> Keyword.get(:from)}
+    )
+    |> subject(gettext("Confirmation instructions"))
+    |> render_body("confirm.html", %{user: user, url: url})
+  end
+
+  def reset(user, url) do
+    new()
+    |> to(user.email)
+    |> from(
+      {Application.get_env(:bludo, :mail) |> Keyword.get(:from_name),
+       Application.get_env(:bludo, :mail) |> Keyword.get(:from)}
+    )
+    |> subject(gettext("Reset password instructions"))
+    |> render_body("reset.html", %{user: user, url: url})
+  end
+end
+
+
+

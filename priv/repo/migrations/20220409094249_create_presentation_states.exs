@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreatePresentationStates do
+defmodule Bludo.Repo.Migrations.CreatePresentationStates do
   use Ecto.Migration
 
   def change do
@@ -14,3 +14,4 @@ defmodule Claper.Repo.Migrations.CreatePresentationStates do
     end
   end
 end
+

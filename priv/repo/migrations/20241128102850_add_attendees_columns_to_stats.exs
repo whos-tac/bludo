@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddAttendeesColumnsToStats do
+defmodule Bludo.Repo.Migrations.AddAttendeesColumnsToStats do
   use Ecto.Migration
 
   def up do
@@ -23,3 +23,4 @@ defmodule Claper.Repo.Migrations.AddAttendeesColumnsToStats do
     end
   end
 end
+

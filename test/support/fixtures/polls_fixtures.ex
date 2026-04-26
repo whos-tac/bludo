@@ -1,12 +1,12 @@
-defmodule Claper.PollsFixtures do
+defmodule Bludo.PollsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Claper.Polls` context.
+  entities via the `Bludo.Polls` context.
   """
 
-  import Claper.{AccountsFixtures, PresentationsFixtures}
+  import Bludo.{AccountsFixtures, PresentationsFixtures}
 
-  require Claper.UtilFixture
+  require Bludo.UtilFixture
 
   @doc """
   Generate a poll.
@@ -24,9 +24,9 @@ defmodule Claper.PollsFixtures do
           %{content: "some option 2", vote_count: 0}
         ]
       })
-      |> Claper.Polls.create_poll()
+      |> Bludo.Polls.create_poll()
 
-    Claper.UtilFixture.merge_preload(poll, preload, %{})
+    Bludo.UtilFixture.merge_preload(poll, preload, %{})
   end
 
   @doc """
@@ -45,8 +45,10 @@ defmodule Claper.PollsFixtures do
         poll_opt_id: poll_opt.id,
         user_id: user_fixture().id
       })
-      |> Claper.Polls.create_poll_vote()
+      |> Bludo.Polls.create_poll_vote()
 
     poll_vote
   end
 end
+
+

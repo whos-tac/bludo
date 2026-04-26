@@ -1,6 +1,6 @@
 defmodule Lti13.Users do
   import Ecto.Query, warn: false
-  alias Claper.Repo
+  alias Bludo.Repo
 
   alias Lti13.Users.User
 
@@ -18,10 +18,10 @@ defmodule Lti13.Users do
     Repo.all(from u in User, where: u.email == ^email)
   end
 
-  def remove_user(claper_user, registration_id) do
+  def remove_user(bludo_user, registration_id) do
     Repo.delete_all(
       from u in User,
-        where: u.registration_id == ^registration_id and u.user_id == ^claper_user.id
+        where: u.registration_id == ^registration_id and u.user_id == ^bludo_user.id
     )
   end
 
@@ -39,9 +39,9 @@ defmodule Lti13.Users do
   end
 
   defp create_new_user(attrs, email, registration_id) do
-    with {:ok, claper_user} <- Claper.Accounts.get_user_by_email_or_create(email),
+    with {:ok, bludo_user} <- Bludo.Accounts.get_user_by_email_or_create(email),
          updated_attrs <-
-           Map.merge(attrs, %{user_id: claper_user.id, registration_id: registration_id}),
+           Map.merge(attrs, %{user_id: bludo_user.id, registration_id: registration_id}),
          {:ok, user} <- create_user(updated_attrs) do
       {:ok, user |> Repo.preload(:user)}
     else
@@ -49,3 +49,6 @@ defmodule Lti13.Users do
     end
   end
 end
+
+
+

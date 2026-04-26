@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddMultipleFromPolls do
+defmodule Bludo.Repo.Migrations.AddMultipleFromPolls do
   use Ecto.Migration
 
   def change do
@@ -10,3 +10,4 @@ defmodule Claper.Repo.Migrations.AddMultipleFromPolls do
     drop index(:poll_votes, [:poll_id, :attendee_identifier]), mode: :cascade
   end
 end
+

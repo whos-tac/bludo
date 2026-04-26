@@ -1,6 +1,6 @@
 defmodule Lti13.DeploymentsTest do
   alias Lti13.Registrations
-  use Claper.DataCase
+  use Bludo.DataCase
 
   alias Lti13.Deployments
   alias Lti13.Deployments.Deployment
@@ -62,3 +62,5 @@ defmodule Lti13.DeploymentsTest do
     end
   end
 end
+
+

@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateStats do
+defmodule Bludo.Repo.Migrations.CreateStats do
   use Ecto.Migration
 
   def change do
@@ -10,3 +10,4 @@ defmodule Claper.Repo.Migrations.CreateStats do
     end
   end
 end
+

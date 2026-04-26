@@ -1,7 +1,7 @@
-defmodule ClaperWeb.Helpers.ConnUtilsTest do
-  use ClaperWeb.ConnCase, async: true
+defmodule BludoWeb.Helpers.ConnUtilsTest do
+  use BludoWeb.ConnCase, async: true
 
-  alias ClaperWeb.Helpers.ConnUtils
+  alias BludoWeb.Helpers.ConnUtils
 
   describe "get_client_ip/1" do
     test "returns the remote_ip from the connection as a string" do
@@ -27,3 +27,5 @@ defmodule ClaperWeb.Helpers.ConnUtilsTest do
     end
   end
 end
+
+

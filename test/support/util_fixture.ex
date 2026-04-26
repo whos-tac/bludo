@@ -1,4 +1,4 @@
-defmodule Claper.UtilFixture do
+defmodule Bludo.UtilFixture do
   defmacro merge_preload(origin, preload, assoc) do
     quote do
       unquote(origin)
@@ -8,3 +8,5 @@ defmodule Claper.UtilFixture do
     end
   end
 end
+
+

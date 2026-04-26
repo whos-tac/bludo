@@ -1,6 +1,6 @@
 defmodule Lti13.Jwks do
   import Ecto.Query, warn: false
-  alias Claper.Repo
+  alias Bludo.Repo
 
   alias Lti13.Jwks.Jwk
 
@@ -53,3 +53,6 @@ defmodule Lti13.Jwks do
     %{keys: public_keys}
   end
 end
+
+
+

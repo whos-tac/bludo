@@ -21,9 +21,9 @@ jobs:
         image: postgres:15
         ports: ['5432:5432']
         env:
-          POSTGRES_PASSWORD: claper
-          POSTGRES_USER: claper
-          POSTGRES_DB: claper
+          POSTGRES_PASSWORD: bludo
+          POSTGRES_USER: bludo
+          POSTGRES_DB: bludo
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -31,7 +31,7 @@ jobs:
           --health-retries 5
     env:
       MIX_ENV: test
-      DATABASE_URL: postgresql://claper:claper@localhost:5432/claper
+      DATABASE_URL: postgresql://bludo:bludo@localhost:5432/bludo
       SECRET_KEY_BASE: QMQE4ypfy0IC1LZI/fygZNvXHPjLslnr49EE7ftcL1wgAC0MwMLdKCVJyrvXPu8z
       BASE_URL: http://localhost:4000
 

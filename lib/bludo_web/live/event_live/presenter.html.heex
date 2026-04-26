@@ -1,0 +1,227 @@
+<style>
+  body {
+    background: white;
+    overflow: hidden;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Custom Scrollbar for minimalist look */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e9ecef;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #dee2e6;
+  }
+</style>
+
+<div
+  id="presenter"
+  class="h-screen w-screen flex flex-col bg-white overflow-hidden"
+  phx-hook="Presenter"
+  data-max-page={@event.presentation_file.length}
+  data-hash={@event.presentation_file.hash}
+  data-current-page={@state.position}
+>
+  <div class="flex-1 flex overflow-hidden">
+    <!-- PERSISTENT LEFT SIDEBAR (QR + JOIN INFO) -->
+    <div class="w-1/4 h-full flex flex-col items-center justify-center border-r border-gray-100 bg-white px-8 py-12 text-center">
+      <div class="flex items-center mb-12">
+        <img src="/images/bulme_logo_blue.png" class="h-16" />
+      </div>
+
+      <div
+        phx-hook="QRCode"
+        data-code={@event.code}
+        data-dynamic="true"
+        id="qr-sidebar"
+        phx-update="ignore"
+        class="w-full aspect-square mb-12"
+      ></div>
+
+      <div class="mt-auto space-y-4">
+        <p class="text-2xl text-gray-400 font-medium">{gettext("Join at")}</p>
+        <p class="text-5xl font-bold text-gray-900">bludo.com</p>
+        <p class="text-6xl font-bold text-gray-900 mt-4">#{@event.code}</p>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 h-full relative overflow-hidden">
+      <!-- INITIAL JOIN SCREEN (WELCOME) -->
+      <div
+        id="joinScreen"
+        class={"#{if @state.join_screen_visible && !@current_poll && !@current_quiz && !@current_embed, do: "opacity-100 z-10", else: "opacity-0 -z-10"} absolute inset-0 bg-white flex flex-col items-center justify-center transition-opacity duration-300"}
+      >
+        <div class="max-w-3xl text-center space-y-12">
+          <h2 class="text-6xl font-bold text-gray-900">
+            {gettext("Scan to interact in real-time")}
+          </h2>
+          <div
+            phx-hook="QRCode"
+            data-code={@event.code}
+            data-dynamic="true"
+            id="qr-main"
+            phx-update="ignore"
+            class="w-80 h-80 mx-auto"
+          ></div>
+          <p class="text-4xl text-gray-500">
+            {gettext("Or go to %{url} and use the code:", url: @host)}
+          </p>
+          <p class="text-7xl font-bold text-gray-900">
+            #{@event.code}
+          </p>
+        </div>
+      </div>
+
+      <!-- DYNAMIC CONTENT (POLLS, QUIZZES, SLIDES, MESSAGES) -->
+      <div class="h-full w-full flex flex-col">
+        <!-- POLLS -->
+        <%= if @current_poll do %>
+          <div class="flex-1 flex flex-col px-16 py-12 bg-white">
+            <div class="flex justify-between items-center mb-6">
+              <span class="text-gray-400 text-lg flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zM12 7V3.5h-4V7H12zM12 13h-4v3.5h4V13z" />
+                </svg>
+                {gettext("Active poll")}
+              </span>
+              <span class="text-gray-400 text-lg flex items-center">
+                {@attendees_nb}
+                <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6.07 17H0v-1a5 5 0 018.5-3.67A6.97 6.97 0 007 16c0 .34.024.673.07 1z" />
+                </svg>
+              </span>
+            </div>
+            <h1 class="text-5xl font-bold text-gray-900 mb-12 border-b border-gray-100 pb-8">
+              {@current_poll.title}
+            </h1>
+
+            <div class="flex-1 space-y-8 overflow-y-auto pr-4">
+              <%= for opt <- @current_poll.poll_opts do %>
+                <div class="relative">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-2xl font-bold text-gray-900">{opt.content}</span>
+                    <span class="text-2xl font-bold text-gray-900">{opt.percentage}%</span>
+                  </div>
+                  <div class="h-10 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      style={"width: #{opt.percentage}%;"}
+                      class="h-full bg-primary-500 rounded-full transition-all duration-500 ease-out"
+                    ></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- QUIZZES -->
+        <%= if @current_quiz do %>
+          <div class="flex-1 flex flex-col bg-white">
+            <.live_component
+              module={BludoWeb.EventLive.ManageableQuizComponent}
+              id={"#{@current_quiz.id}-quiz"}
+              quiz={@current_quiz}
+              iframe={@iframe}
+            />
+          </div>
+        <% end %>
+
+        <!-- MESSAGES / SLIDES GRID -->
+        <div
+          :if={!@current_poll && !@current_quiz}
+          id="slider-wrapper"
+          class="flex-1 grid grid-cols-1 items-center justify-center relative bg-white"
+        >
+          <!-- MESSAGES SIDE-BY-SIDE -->
+          <div
+            :if={@state.chat_visible}
+            class="absolute inset-0 z-20 bg-white/95 flex flex-col p-12 overflow-hidden"
+            id="post-list-wrapper"
+          >
+            <h2 class="text-4xl font-bold text-gray-900 mb-8 border-b border-gray-100 pb-4">
+              {gettext("Questions")}
+            </h2>
+            <div id="post-list" class="space-y-6 overflow-y-auto pr-4" phx-update="replace">
+              <%= for post <- (if @state.show_only_pinned, do: @pinned_posts, else: @posts) do %>
+                <div
+                  id={"#{post.id}-post"}
+                  class="p-8 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm"
+                >
+                  <%= if post.name do %>
+                    <p class="text-xl text-primary-600 font-bold mb-4 uppercase tracking-wider">
+                      {post.name}
+                    </p>
+                  <% end %>
+                  <p class="text-4xl text-gray-900 leading-tight">{post.body}</p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- SLIDES -->
+          <div id="slides" class="h-full w-full flex items-center justify-center bg-gray-50">
+            <%= if @current_embed do %>
+              <div id="embed" class="w-full h-full">
+                <.live_component
+                  id="embed-component"
+                  module={BludoWeb.EventLive.EmbedIframeComponent}
+                  provider={@current_embed.provider}
+                  content={@current_embed.content}
+                />
+              </div>
+            <% else %>
+              <div id="slider" class="w-full h-full flex items-center justify-center">
+                <img
+                  :for={src <- Presentations.get_slide_urls(@event.presentation_file)}
+                  src={src}
+                  class="max-h-full max-w-full object-contain"
+                />
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINIMALIST BOTTOM CONTROL BAR -->
+  <div class="h-20 bg-secondary-500 px-8 flex items-center justify-between z-50">
+    <div class="flex items-center space-x-8 text-white">
+      <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center">
+        <div class="h-4 w-4 bg-white rounded-sm"></div>
+      </div>
+      <button class="hover:text-primary-400 transition-colors">
+        <span class="text-xl font-medium">← {gettext("Prev")}</span>
+      </button>
+      <button class="hover:text-primary-400 transition-colors">
+        <span class="text-xl font-medium">{gettext("Next")} →</span>
+      </button>
+    </div>
+
+    <div class="flex items-center space-x-12">
+      <div class="flex items-center space-x-3 text-white">
+        <div id="reacts-mini" phx-hook="GlobalReacts" phx-update="ignore"></div>
+        <span class="text-2xl font-bold" id="counter-mini" phx-hook="UpdateAttendees" phx-update="ignore">
+          {@attendees_nb}
+        </span>
+        <img src="/images/icons/online-users.svg" class="h-8 filter invert" />
+      </div>
+      <img src="/images/icons/bulme/icon_key_blue.svg" class="h-10 opacity-50 filter grayscale brightness-200" />
+    </div>
+  </div>
+</div>
+
+

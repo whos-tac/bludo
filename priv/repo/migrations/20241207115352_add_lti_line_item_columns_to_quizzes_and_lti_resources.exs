@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddLtiLineItemColumnsToQuizzesAndEvents do
+defmodule Bludo.Repo.Migrations.AddLtiLineItemColumnsToQuizzesAndEvents do
   use Ecto.Migration
 
   def change do
@@ -11,3 +11,4 @@ defmodule Claper.Repo.Migrations.AddLtiLineItemColumnsToQuizzesAndEvents do
     end
   end
 end
+

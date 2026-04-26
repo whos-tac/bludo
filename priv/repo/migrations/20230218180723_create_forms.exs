@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateForms do
+defmodule Bludo.Repo.Migrations.CreateForms do
   use Ecto.Migration
 
   def change do
@@ -13,3 +13,4 @@ defmodule Claper.Repo.Migrations.CreateForms do
     end
   end
 end
+

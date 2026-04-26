@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreatePosts do
+defmodule Bludo.Repo.Migrations.CreatePosts do
   use Ecto.Migration
 
   def change do
@@ -23,3 +23,4 @@ defmodule Claper.Repo.Migrations.CreatePosts do
     create index(:posts, [:user_id])
   end
 end
+

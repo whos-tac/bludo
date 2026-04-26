@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddLtiTables do
+defmodule Bludo.Repo.Migrations.AddLtiTables do
   use Ecto.Migration
 
   def change do
@@ -72,3 +72,4 @@ defmodule Claper.Repo.Migrations.AddLtiTables do
     create unique_index(:lti_13_resources, [:resource_id, :registration_id])
   end
 end
+

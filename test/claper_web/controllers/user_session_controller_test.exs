@@ -1,7 +1,7 @@
-defmodule ClaperWeb.UserSessionControllerTest do
-  use ClaperWeb.ConnCase, async: true
+defmodule BludoWeb.UserSessionControllerTest do
+  use BludoWeb.ConnCase, async: true
 
-  import Claper.AccountsFixtures
+  import Bludo.AccountsFixtures
 
   setup do
     %{user: user_fixture()}
@@ -34,3 +34,5 @@ defmodule ClaperWeb.UserSessionControllerTest do
     end
   end
 end
+
+

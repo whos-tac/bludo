@@ -1,10 +1,10 @@
-defmodule Claper.EventsTest do
-  use Claper.DataCase
+defmodule Bludo.EventsTest do
+  use Bludo.DataCase
 
-  alias Claper.Events
-  alias Claper.Events.{Event, ActivityLeader}
+  alias Bludo.Events
+  alias Bludo.Events.{Event, ActivityLeader}
 
-  import Claper.{
+  import Bludo.{
     EventsFixtures,
     AccountsFixtures,
     PresentationsFixtures,
@@ -14,7 +14,7 @@ defmodule Claper.EventsTest do
   }
 
   setup_all do
-    sandbox_owner_pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Claper.Repo, shared: true)
+    sandbox_owner_pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Bludo.Repo, shared: true)
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(sandbox_owner_pid) end)
 
     alice = user_fixture(%{email: "alice@example.com"})
@@ -461,7 +461,7 @@ defmodule Claper.EventsTest do
       event = event_fixture()
       assert event.expired_at == nil
 
-      Phoenix.PubSub.subscribe(Claper.PubSub, "event:#{event.uuid}")
+      Phoenix.PubSub.subscribe(Bludo.PubSub, "event:#{event.uuid}")
       {:ok, event} = Events.terminate_event(event)
 
       assert NaiveDateTime.diff(NaiveDateTime.utc_now(), event.expired_at) |> abs() < 1
@@ -549,7 +549,7 @@ defmodule Claper.EventsTest do
       assert {:ok, %Event{}} = Events.import(user.id, from_event.uuid, to_event.uuid)
 
       assert Enum.at(
-               Claper.Presentations.get_presentation_file!(to_presentation_file.id, [:polls]).polls,
+               Bludo.Presentations.get_presentation_file!(to_presentation_file.id, [:polls]).polls,
                0
              ).title == from_poll.title
     end
@@ -584,3 +584,5 @@ defmodule Claper.EventsTest do
     }
   end
 end
+
+

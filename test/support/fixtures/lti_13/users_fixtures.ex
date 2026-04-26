@@ -8,7 +8,7 @@ defmodule Lti13.UsersFixtures do
   Generate a user.
   """
   def user_fixture(attrs \\ %{}) do
-    claper_user = Claper.AccountsFixtures.user_fixture()
+    bludo_user = Bludo.AccountsFixtures.user_fixture()
     registration = Lti13.RegistrationsFixtures.registration_fixture()
 
     {:ok, user} =
@@ -17,7 +17,7 @@ defmodule Lti13.UsersFixtures do
         sub: "a6d5c443-1f51-4783-ba1a-7686ffe3b54a",
         name: "John Doe",
         email: "john#{System.unique_integer([:positive])}@doe.edu",
-        user_id: claper_user.id,
+        user_id: bludo_user.id,
         registration_id: registration.id,
         roles: [
           "http://purl.imsglobal.org/vocab/lis/v2/system/person#User",
@@ -29,3 +29,5 @@ defmodule Lti13.UsersFixtures do
     user
   end
 end
+
+

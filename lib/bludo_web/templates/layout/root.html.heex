@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {csrf_meta_tag()}
+    <.live_title suffix=" · Bludo" )>{assigns[:page_title] || "Bludo"}</.live_title>
+    <link rel="icon" type="image/svg+xml" href="/images/icons/bulme/icon_key_blue.svg" />
+    <link phx-track-static rel="stylesheet" href="/assets/app.css" />
+    <link phx-track-static rel="stylesheet" href="/assets/custom.css" />
+    <script>
+      window.bludoConfig = {
+        supportedLocales: <%= Jason.encode!(Application.get_env(:Bludo, :languages, ["en", "fr", "es", "it", "de"])) %>
+      };
+    </script>
+    <script defer phx-track-static type="text/javascript" src="/assets/app.js">
+    </script>
+  </head>
+  <body class="">
+    <div class="min-h-full">
+      <!-- Main column -->
+      <div class="flex flex-col">
+        <main class="flex-1">
+          {@inner_content}
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+
+

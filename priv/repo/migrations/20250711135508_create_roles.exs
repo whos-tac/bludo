@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.CreateRoles do
+defmodule Bludo.Repo.Migrations.CreateRoles do
   use Ecto.Migration
 
   def change do
@@ -12,3 +12,4 @@ defmodule Claper.Repo.Migrations.CreateRoles do
     create unique_index(:roles, [:name])
   end
 end
+

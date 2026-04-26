@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddShowAttendeeCountPresentationState do
+defmodule Bludo.Repo.Migrations.AddShowAttendeeCountPresentationState do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddShowAttendeeCountPresentationState do
     end
   end
 end
+

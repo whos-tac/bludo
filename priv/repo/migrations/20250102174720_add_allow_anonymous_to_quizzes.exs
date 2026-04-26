@@ -1,4 +1,4 @@
-defmodule Claper.Repo.Migrations.AddAllowAnonymousToQuizzes do
+defmodule Bludo.Repo.Migrations.AddAllowAnonymousToQuizzes do
   use Ecto.Migration
 
   def change do
@@ -7,3 +7,4 @@ defmodule Claper.Repo.Migrations.AddAllowAnonymousToQuizzes do
     end
   end
 end
+
