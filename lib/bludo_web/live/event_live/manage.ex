@@ -59,7 +59,13 @@ defmodule BludoWeb.EventLive.Manage do
         |> assign(:create, nil)
         |> assign(:list_tab, :posts)
         |> assign(:create_action, :new)
-        |> assign(:preview, false)
+        |> assign(:preview, true)
+        |> assign(:is_leader, true)
+        |> assign(:attendee_identifier, nil)
+        |> assign(:leaders, Bludo.Events.get_activity_leaders_for_event(event.id))
+        |> assign(:quiz, %Bludo.Quizzes.Quiz{})
+        |> assign(:poll, %Bludo.Polls.Poll{})
+        |> assign(:form, %Bludo.Forms.Form{})
         |> push_event("page-manage", %{
           current_page: event.presentation_file.presentation_state.position,
           timeout: 500
@@ -77,6 +83,8 @@ defmodule BludoWeb.EventLive.Manage do
   defp leader?(_socket, _event), do: false
 
   defp event_id(%{assigns: %{event: event}}), do: event.id
+
+  # --- HANDLE_INFO CLAUSES ---
 
   @impl true
   def handle_info(%{event: "presence_diff"}, %{assigns: %{event: event}} = socket) do
@@ -189,93 +197,93 @@ defmodule BludoWeb.EventLive.Manage do
 
   @impl true
   def handle_info({:poll_created, poll}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(poll.position)}
+    {:noreply, interactions_at_position(socket, poll.position)}
   end
 
   @impl true
   def handle_info({:form_created, form}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(form.position)}
+    {:noreply, interactions_at_position(socket, form.position)}
   end
 
   @impl true
   def handle_info({:embed_created, embed}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(embed.position)}
+    {:noreply, interactions_at_position(socket, embed.position)}
   end
 
   @impl true
   def handle_info({:quiz_created, quiz}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(quiz.position)}
+    {:noreply, interactions_at_position(socket, quiz.position)}
   end
 
   @impl true
   def handle_info({:poll_updated, poll}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(poll.position)}
+    {:noreply, interactions_at_position(socket, poll.position)}
   end
 
   @impl true
   def handle_info({:embed_updated, embed}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(embed.position)}
+    {:noreply, interactions_at_position(socket, embed.position)}
   end
 
   @impl true
   def handle_info({:form_updated, form}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(form.position)}
+    {:noreply, interactions_at_position(socket, form.position)}
   end
 
   @impl true
   def handle_info({:quiz_updated, quiz}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(quiz.position)}
+    {:noreply, interactions_at_position(socket, quiz.position)}
   end
 
   @impl true
   def handle_info({:poll_deleted, poll}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(poll.position)}
+    {:noreply, interactions_at_position(socket, poll.position)}
   end
 
   @impl true
   def handle_info({:embed_deleted, embed}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(embed.position)}
+    {:noreply, interactions_at_position(socket, embed.position)}
   end
 
   @impl true
   def handle_info({:form_deleted, form}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(form.position)}
+    {:noreply, interactions_at_position(socket, form.position)}
   end
 
   @impl true
   def handle_info({:quiz_deleted, quiz}, socket) do
-    {:noreply,
-     socket
-     |> interactions_at_position(quiz.position)}
+    {:noreply, interactions_at_position(socket, quiz.position)}
   end
 
   @impl true
-  def handle_info(
-        {:current_interaction, interaction},
-        socket
-      ) do
+  def handle_info({:state_updated, state}, socket) do
+    if state.position != socket.assigns.state.position do
+      {:noreply,
+       socket
+       |> assign(:state, state)
+       |> interactions_at_position(state.position)
+       |> push_event("page-manage", %{current_page: state.position, timeout: 0})}
+    else
+      {:noreply, socket |> assign(:state, state)}
+    end
+  end
+
+  @impl true
+  def handle_info({:page_changed, page}, socket) do
+    # When page changes globally, update local state if it differs
+    if socket.assigns.state.position != page do
+      {:noreply,
+       socket
+       |> assign(:state, %{socket.assigns.state | position: page})
+       |> interactions_at_position(page)
+       |> push_event("page-manage", %{current_page: page, timeout: 0})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_info({:current_interaction, interaction}, socket) do
     if socket.assigns.current_interaction != interaction do
       position = if interaction, do: interaction.position, else: socket.assigns.state.position
 
@@ -289,12 +297,25 @@ defmodule BludoWeb.EventLive.Manage do
   end
 
   @impl true
-  def handle_info({:state_updated, state}, socket) do
-    if state.position != socket.assigns.state.position do
-      {:noreply, socket |> assign(:state, state) |> interactions_at_position(state.position)}
-    else
-      {:noreply, socket |> assign(:state, state)}
-    end
+  def handle_info({:new_post, post}, socket) do
+    socket =
+      if post.pinned do
+        socket
+        |> stream_insert(:pinned_posts, post, at: 0)
+        |> assign(:pinned_post_count, socket.assigns.pinned_post_count + 1)
+      else
+        socket
+        |> stream_insert(:posts, post, at: 0)
+        |> assign(:post_count, socket.assigns.post_count + 1)
+      end
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:new_form_submit, _submit}, socket) do
+    # Refresh interactions to update response counts
+    {:noreply, interactions_at_position(socket, socket.assigns.state.position)}
   end
 
   @impl true
@@ -302,34 +323,32 @@ defmodule BludoWeb.EventLive.Manage do
     {:noreply, socket}
   end
 
+  # --- HANDLE_EVENT CLAUSES ---
+
   @impl true
-  def handle_event(
-        "current-page",
-        %{"page" => page},
-        %{assigns: %{state: state}} = socket
-      ) do
+  def handle_event("current-page", %{"page" => page}, socket) do
     page = String.to_integer(page)
 
     {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :position => page
-        }
-      )
+      Bludo.Presentations.update_presentation_state(socket.assigns.state, %{
+        :position => page
+      })
 
+    # Broadcast page change to all subscribers
     Phoenix.PubSub.broadcast(
       Bludo.PubSub,
-      "event:#{socket.assigns.event.uuid}",
+      "presentation:#{socket.assigns.event.presentation_file.id}",
       {:page_changed, page}
     )
 
     {:noreply,
      socket
      |> assign(:state, new_state)
-     |> interactions_at_position(page)}
+     |> interactions_at_position(page, true)
+     |> push_event("page-manage", %{current_page: page, timeout: 0})}
   end
 
+  @impl true
   def handle_event("poll-set-active", %{"id" => id}, socket) do
     case Polls.get_poll_for_event(id, event_id(socket)) do
       nil ->
@@ -351,6 +370,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("form-set-active", %{"id" => id}, socket) do
     case Forms.get_form_for_event(id, event_id(socket)) do
       nil ->
@@ -372,6 +392,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("embed-set-active", %{"id" => id}, socket) do
     case Embeds.get_embed_for_event(id, event_id(socket)) do
       nil ->
@@ -393,6 +414,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("poll-set-inactive", %{"id" => id}, socket) do
     case Polls.get_poll_for_event(id, event_id(socket)) do
       nil ->
@@ -414,6 +436,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("form-set-inactive", %{"id" => id}, socket) do
     case Forms.get_form_for_event(id, event_id(socket)) do
       nil ->
@@ -435,6 +458,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("embed-set-inactive", %{"id" => id}, socket) do
     case Embeds.get_embed_for_event(id, event_id(socket)) do
       nil ->
@@ -481,6 +505,7 @@ defmodule BludoWeb.EventLive.Manage do
     end
   end
 
+  @impl true
   def handle_event("quiz-set-inactive", %{"id" => id}, socket) do
     case Quizzes.get_quiz_for_event(id, event_id(socket)) do
       nil ->
@@ -503,14 +528,23 @@ defmodule BludoWeb.EventLive.Manage do
   end
 
   @impl true
-  def handle_event(
-        "ban",
-        %{"attendee-identifier" => attendee_identifier},
-        %{assigns: %{event: event}} = socket
-      ) do
-    Bludo.Posts.delete_all_posts(:attendee_identifier, attendee_identifier, event)
+  def handle_event("interaction-enable", %{"id" => id, "type" => type}, socket) do
+    case type do
+      "poll" -> handle_event("poll-set-active", %{"id" => id}, socket)
+      "form" -> handle_event("form-set-active", %{"id" => id}, socket)
+      "quiz" -> handle_event("quiz-set-active", %{"id" => id}, socket)
+      _ -> {:noreply, socket}
+    end
+  end
 
-    ban(attendee_identifier, socket)
+  @impl true
+  def handle_event("interaction-disable", %{"id" => id, "type" => type}, socket) do
+    case type do
+      "poll" -> handle_event("poll-set-inactive", %{"id" => id}, socket)
+      "form" -> handle_event("form-set-inactive", %{"id" => id}, socket)
+      "quiz" -> handle_event("quiz-set-inactive", %{"id" => id}, socket)
+      _ -> {:noreply, socket}
+    end
   end
 
   @impl true
@@ -522,168 +556,107 @@ defmodule BludoWeb.EventLive.Manage do
   end
 
   @impl true
-  def handle_event(
-        "ban",
-        %{"user-id" => user_id},
-        %{assigns: %{event: event}} = socket
-      ) do
-    Bludo.Posts.delete_all_posts(:user_id, user_id, event)
+  def handle_event("pin-post", %{"id" => id}, socket) do
+    post = Bludo.Posts.get_post!(id)
+    {:ok, _} = Bludo.Posts.toggle_pin_post(post)
+    {:noreply, socket}
+  end
 
+  @impl true
+  def handle_event("unpin-post", %{"id" => id}, socket) do
+    post = Bludo.Posts.get_post!(id)
+    {:ok, _} = Bludo.Posts.toggle_pin_post(post)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    case Bludo.Posts.get_post_for_event(id, event_id(socket), [:event]) do
+      nil ->
+        {:noreply, socket}
+
+      post ->
+        {:ok, _} = Bludo.Posts.delete_post(post)
+
+        updated_socket =
+          if post.pinned do
+            stream(socket, :pinned_posts, list_pinned_posts(socket, socket.assigns.event.uuid),
+              reset: true
+            )
+
+            stream(socket, :posts, list_all_posts(socket, socket.assigns.event.uuid), reset: true)
+          else
+            stream(socket, :posts, list_all_posts(socket, socket.assigns.event.uuid), reset: true)
+          end
+
+        {:noreply, updated_socket}
+    end
+  end
+
+  @impl true
+  def handle_event("delete-post", %{"id" => id}, socket) do
+    post = Bludo.Posts.get_post!(id)
+    {:ok, _} = Bludo.Posts.delete_post(post)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete-poll", %{"id" => id}, socket) do
+    case Polls.get_poll_for_event(id, event_id(socket)) do
+      nil ->
+        {:noreply, socket}
+
+      poll ->
+        {:ok, _} = Polls.delete_poll(socket.assigns.event.uuid, poll)
+        {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("delete-quiz", %{"id" => id}, socket) do
+    case Quizzes.get_quiz_for_event(id, event_id(socket)) do
+      nil ->
+        {:noreply, socket}
+
+      quiz ->
+        {:ok, _} = Quizzes.delete_quiz(socket.assigns.event.uuid, quiz)
+        {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("delete-form-submit", %{"id" => id}, socket) do
+    case Bludo.Forms.get_form_submit_for_event(id, event_id(socket)) do
+      nil ->
+        {:noreply, socket}
+
+      form_submit ->
+        {:ok, _} = Bludo.Forms.delete_form_submit(socket.assigns.event.uuid, form_submit)
+
+        {:noreply,
+         assign(
+           socket,
+           :form_submits,
+           list_form_submits(socket, socket.assigns.event.presentation_file.id)
+         )}
+    end
+  end
+
+  @impl true
+  def handle_event("ban", %{"attendee-identifier" => attendee_identifier}, socket) do
+    Bludo.Posts.delete_all_posts(:attendee_identifier, attendee_identifier, socket.assigns.event)
+    ban(attendee_identifier, socket)
+  end
+
+  @impl true
+  def handle_event("ban", %{"user-id" => user_id}, socket) do
+    Bludo.Posts.delete_all_posts(:user_id, user_id, socket.assigns.event)
     ban(String.to_integer(user_id), socket)
   end
 
   @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "chat_visible", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :chat_visible => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "poll_visible", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :poll_visible => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "chat_enabled", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :chat_enabled => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "anonymous_chat_enabled", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :anonymous_chat_enabled => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "message_reaction_enabled", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :message_reaction_enabled => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "show_only_pinned", "value" => value},
-        %{assigns: %{event: _event, state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :show_only_pinned => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "show_attendee_count", "value" => value},
-        %{assigns: %{event: _event, state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :show_attendee_count => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "join_screen_visible", "value" => value},
-        %{assigns: %{state: state}} = socket
-      ) do
-    {:ok, new_state} =
-      Bludo.Presentations.update_presentation_state(
-        state,
-        %{
-          :join_screen_visible => value
-        }
-      )
-
-    {:noreply, socket |> assign(:state, new_state)}
-  end
-
-  @impl true
-  def handle_event(
-        "checked",
-        %{"key" => "quiz_show_results", "value" => value},
-        %{assigns: %{current_interaction: interaction}} = socket
-      ) do
-    {:ok, new_interaction} =
-      Bludo.Quizzes.update_quiz(
-        socket.assigns.event.uuid,
-        interaction,
-        %{
-          :show_results => value
-        }
-      )
-
-    {:noreply, socket |> assign(:current_interaction, new_interaction)}
+  def handle_event("ban-user", %{"id" => id}, socket) do
+    ban(id, socket)
   end
 
   @impl true
@@ -720,27 +693,32 @@ defmodule BludoWeb.EventLive.Manage do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    case Bludo.Posts.get_post_for_event(id, event_id(socket), [:event]) do
-      nil ->
-        {:noreply, socket}
+  def handle_event("checked", %{"key" => "quiz_show_results", "value" => value}, socket) do
+    {:ok, new_interaction} =
+      Bludo.Quizzes.update_quiz(
+        socket.assigns.event.uuid,
+        socket.assigns.current_interaction,
+        %{
+          :show_results => value
+        }
+      )
 
-      post ->
-        {:ok, _} = Bludo.Posts.delete_post(post)
+    {:noreply, socket |> assign(:current_interaction, new_interaction)}
+  end
 
-        updated_socket =
-          if post.pinned do
-            stream(socket, :pinned_posts, list_pinned_posts(socket, socket.assigns.event.uuid),
-              reset: true
-            )
+  @impl true
+  def handle_event("checked", %{"key" => key, "value" => value}, socket) do
+    key_atom = String.to_existing_atom(key)
 
-            stream(socket, :posts, list_all_posts(socket, socket.assigns.event.uuid), reset: true)
-          else
-            stream(socket, :posts, list_all_posts(socket, socket.assigns.event.uuid), reset: true)
-          end
+    {:ok, new_state} =
+      Bludo.Presentations.update_presentation_state(
+        socket.assigns.state,
+        %{
+          key_atom => value
+        }
+      )
 
-        {:noreply, updated_socket}
-    end
+    {:noreply, socket |> assign(:state, new_state)}
   end
 
   @impl true
@@ -751,24 +729,6 @@ defmodule BludoWeb.EventLive.Manage do
      |> stream(:questions, list_all_questions(socket, socket.assigns.event.uuid, sort),
        reset: true
      )}
-  end
-
-  @impl true
-  def handle_event("delete-form-submit", %{"id" => id}, socket) do
-    case Bludo.Forms.get_form_submit_for_event(id, event_id(socket)) do
-      nil ->
-        {:noreply, socket}
-
-      form_submit ->
-        {:ok, _} = Bludo.Forms.delete_form_submit(socket.assigns.event.uuid, form_submit)
-
-        {:noreply,
-         assign(
-           socket,
-           :form_submits,
-           list_form_submits(socket, socket.assigns.event.presentation_file.id)
-         )}
-    end
   end
 
   @impl true
@@ -823,56 +783,40 @@ defmodule BludoWeb.EventLive.Manage do
   end
 
   @impl true
-  def handle_event("delete-poll", %{"id" => id}, socket) do
-    case Polls.get_poll_for_event(id, event_id(socket)) do
-      nil ->
-        {:noreply, socket}
+  def handle_event("toggle-preview", _params, socket) do
+    {:noreply, socket |> update(:preview, &(!&1))}
+  end
 
-      poll ->
-        {:ok, _} = Polls.delete_poll(socket.assigns.event.uuid, poll)
-        {:noreply, socket}
+  @impl true
+  def handle_event("toggle-interaction-modal", _params, socket) do
+    socket =
+      socket
+      |> update(:interaction_modal, &(!&1))
+      |> assign(:create, nil)
+
+    if not socket.assigns.interaction_modal do
+      {:noreply, push_patch(socket, to: ~p"/e/#{socket.assigns.event.code}/manage")}
+    else
+      {:noreply, socket}
     end
   end
 
   @impl true
-  def handle_event("delete-quiz", %{"id" => id}, socket) do
-    case Quizzes.get_quiz_for_event(id, event_id(socket)) do
-      nil ->
-        {:noreply, socket}
+  def handle_event("toggle-chat", _params, socket) do
+    {:ok, new_state} =
+      Bludo.Presentations.update_presentation_state(socket.assigns.state, %{
+        :chat_visible => !socket.assigns.state.chat_visible
+      })
 
-      quiz ->
-        {:ok, _} = Quizzes.delete_quiz(socket.assigns.event.uuid, quiz)
-        {:noreply, socket}
-    end
-  end
-
-  @impl true
-  def handle_event("toggle-preview", _params, %{assigns: %{preview: preview}} = socket) do
-    {:noreply, socket |> assign(:preview, !preview)}
-  end
-
-  @impl true
-  def handle_event(
-        "toggle-interaction-modal",
-        _params,
-        %{assigns: %{interaction_modal: _interaction_modal = true}} = socket
-      ) do
-    {:noreply, socket |> push_navigate(to: ~p"/e/#{socket.assigns.event.code}/manage")}
-  end
-
-  @impl true
-  def handle_event(
-        "toggle-interaction-modal",
-        _params,
-        %{assigns: %{interaction_modal: _interaction_modal}} = socket
-      ) do
-    {:noreply, socket |> assign(:interaction_modal, true)}
+    {:noreply, socket |> assign(:state, new_state)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
+
+  # --- PRIVATE HELPERS ---
 
   def toggle_settings_modal(js \\ %JS{}) do
     js
@@ -887,9 +831,16 @@ defmodule BludoWeb.EventLive.Manage do
     socket
   end
 
+  defp apply_action(socket, :add_presentation, _params) do
+    socket
+    |> assign(:create, "presentation")
+    |> assign(:interaction_modal, true)
+  end
+
   defp apply_action(socket, :add_poll, _params) do
     socket
     |> assign(:create, "poll")
+    |> assign(:interaction_modal, true)
     |> assign(:poll, %Polls.Poll{
       poll_opts: [%Polls.PollOpt{content: gettext("Yes")}, %Polls.PollOpt{content: gettext("No")}]
     })
@@ -914,6 +865,7 @@ defmodule BludoWeb.EventLive.Manage do
   defp apply_action(socket, :add_form, _params) do
     socket
     |> assign(:create, "form")
+    |> assign(:interaction_modal, true)
     |> assign(:form, %Forms.Form{
       fields: [
         %Forms.Field{name: gettext("Name"), type: "text"},
@@ -969,6 +921,7 @@ defmodule BludoWeb.EventLive.Manage do
   defp apply_action(socket, :add_quiz, _params) do
     socket
     |> assign(:create, "quiz")
+    |> assign(:interaction_modal, true)
     |> assign(:quiz, %Quizzes.Quiz{
       presentation_file_id: socket.assigns.event.presentation_file.id,
       quiz_questions: [
@@ -1027,6 +980,12 @@ defmodule BludoWeb.EventLive.Manage do
     {:noreply, socket |> assign(:state, new_state)}
   end
 
+  defp interaction_type(%Bludo.Polls.Poll{}), do: "poll"
+  defp interaction_type(%Bludo.Forms.Form{}), do: "form"
+  defp interaction_type(%Bludo.Quizzes.Quiz{}), do: "quiz"
+  defp interaction_type(%Bludo.Embeds.Embed{}), do: "embed"
+  defp interaction_type(_), do: "unknown"
+
   defp interactions_at_position(
          %{assigns: %{event: event}} = socket,
          position,
@@ -1062,6 +1021,3 @@ defmodule BludoWeb.EventLive.Manage do
     Bludo.Forms.list_form_submits(presentation_file_id, [:form])
   end
 end
-
-
-

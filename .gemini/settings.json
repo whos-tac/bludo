@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "cloudrun": {
+      "command": "npx -y @google-cloud/cloud-run-mcp",
+      "args": []
+    },
+    "pdf-reader-mcp": {
+      "command": "npx -y @sylphx/pdf-reader-mcp",
+      "args": []
+    },
+    "math-mcp": {
+      "command": "C:\\Users\\thatw\\AppData\\Roaming\\Python\\Python314\\Scripts\\uvx math-mcp-learning-server",
+      "args": []
+    },
+    "arxiv-latex-mcp": {
+      "command": "C:\\Users\\thatw\\AppData\\Roaming\\Python\\Python314\\Scripts\\uvx arxiv-latex-mcp",
+      "args": []
+    },
+    "firebase-mcp-server": {
+      "command": "npx -y firebase-tools@latest mcp",
+      "args": []
+    }
+  }
+}

@@ -65,6 +65,26 @@ defmodule BludoWeb.EventLive.Presenter do
     end
   end
 
+  @impl true
+  def handle_event("prev-page", _params, socket) do
+    if socket.assigns.state.position > 0 do
+      {:ok, state} = Bludo.Presentations.update_presentation_state(socket.assigns.state, %{position: socket.assigns.state.position - 1})
+      {:noreply, socket |> assign(:state, state)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("next-page", _params, socket) do
+    if socket.assigns.state.position < socket.assigns.event.presentation_file.length - 1 do
+      {:ok, state} = Bludo.Presentations.update_presentation_state(socket.assigns.state, %{position: socket.assigns.state.position + 1})
+      {:noreply, socket |> assign(:state, state)}
+    else
+      {:noreply, socket}
+    end
+  end
+
   defp update_post_in_list(posts, updated_post) do
     Enum.map(posts, fn post ->
       if post.id == updated_post.id, do: updated_post, else: post

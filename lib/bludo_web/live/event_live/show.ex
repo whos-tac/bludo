@@ -352,6 +352,16 @@ defmodule BludoWeb.EventLive.Show do
   end
 
   @impl true
+  def handle_info({"react", params}, socket) do
+    handle_event("react", params, socket)
+  end
+
+  @impl true
+  def handle_info({"unreact", params}, socket) do
+    handle_event("unreact", params, socket)
+  end
+
+  @impl true
   def handle_info(_, socket) do
     {:noreply, socket}
   end

@@ -183,12 +183,14 @@
                 />
               </div>
             <% else %>
-              <div id="slider" class="w-full h-full flex items-center justify-center">
-                <img
-                  :for={src <- Presentations.get_slide_urls(@event.presentation_file)}
-                  src={src}
-                  class="max-h-full max-w-full object-contain"
-                />
+              <div id="slider-ignore-wrapper" class="w-full h-full" phx-update="ignore">
+                <div id="slider" class="w-full h-full flex items-center justify-center">
+                  <img
+                    :for={src <- Presentations.get_slide_urls(@event.presentation_file)}
+                    src={src}
+                    class="max-h-full max-w-full object-contain"
+                  />
+                </div>
               </div>
             <% end %>
           </div>
@@ -198,16 +200,16 @@
   </div>
 
   <!-- MINIMALIST BOTTOM CONTROL BAR -->
-  <div class="h-20 bg-secondary-500 px-8 flex items-center justify-between z-50">
+  <div class={"h-20 bg-secondary-900 border-t border-gray-800 px-8 flex items-center justify-between z-50 #{if not @state.control_bar_visible, do: "hidden"}"}>
     <div class="flex items-center space-x-8 text-white">
-      <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center">
-        <div class="h-4 w-4 bg-white rounded-sm"></div>
+      <div class="h-10 w-10 bg-Supporting-Red-600 rounded-lg flex items-center justify-center shadow-lg shadow-Supporting-Red-500/20">
+        <div class="h-4 w-4 bg-white rounded-sm animate-pulse"></div>
       </div>
-      <button class="hover:text-primary-400 transition-colors">
-        <span class="text-xl font-medium">← {gettext("Prev")}</span>
+      <button phx-click="prev-page" class="hover:text-primary-300 transition-colors flex items-center space-x-2 group">
+        <span class="text-xl font-bold group-hover:-translate-x-1 transition-transform">← {gettext("Prev")}</span>
       </button>
-      <button class="hover:text-primary-400 transition-colors">
-        <span class="text-xl font-medium">{gettext("Next")} →</span>
+      <button phx-click="next-page" class="hover:text-primary-300 transition-colors flex items-center space-x-2 group">
+        <span class="text-xl font-bold group-hover:translate-x-1 transition-transform">{gettext("Next")} →</span>
       </button>
     </div>
 

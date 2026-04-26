@@ -183,6 +183,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <%= if not Enum.member?(@liked_posts, @post.id) do %>
                 <button
                   phx-click="react"
+                  phx-target={@myself}
                   phx-value-type="👍"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-white items-center"
@@ -195,6 +196,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <% else %>
                 <button
                   phx-click="unreact"
+                  phx-target={@myself}
                   phx-value-type="👍"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-gray-100 items-center"
@@ -210,6 +212,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <%= if not Enum.member?(@loved_posts, @post.id) do %>
                 <button
                   phx-click="react"
+                  phx-target={@myself}
                   phx-value-type="❤️"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-white items-center"
@@ -222,6 +225,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <% else %>
                 <button
                   phx-click="unreact"
+                  phx-target={@myself}
                   phx-value-type="❤️"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-gray-100 items-center"
@@ -235,6 +239,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <%= if not Enum.member?(@loled_posts, @post.id) do %>
                 <button
                   phx-click="react"
+                  phx-target={@myself}
                   phx-value-type="😂"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-white items-center"
@@ -247,6 +252,7 @@ defmodule BludoWeb.EventLive.PostComponent do
               <% else %>
                 <button
                   phx-click="unreact"
+                  phx-target={@myself}
                   phx-value-type="😂"
                   phx-value-post-id={@post.uuid}
                   class="flex rounded-full px-3 py-1 border border-gray-300 bg-gray-100 items-center"
@@ -263,6 +269,20 @@ defmodule BludoWeb.EventLive.PostComponent do
       <% end %>
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("react", params, socket) do
+    # Forward the event to the parent LiveView
+    send(self(), {"react", params})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("unreact", params, socket) do
+    # Forward the event to the parent LiveView
+    send(self(), {"unreact", params})
+    {:noreply, socket}
   end
 
   defp leader?(post, event, leaders) do

@@ -140,7 +140,7 @@
                             <% end %>
                           </td>
                           <td>
-                            {Calendar.strftime(user.inserted_at, "%Y-%m-%d %H:%M")}
+                            {format_datetime(user.inserted_at)}
                           </td>
                           <td class="text-right">
                             <div class="flex justify-end gap-2">
@@ -277,20 +277,20 @@
               <div class="grid grid-cols-3 gap-4">
                 <dt class="font-medium">{gettext("Created At")}</dt>
                 <dd class="col-span-2">
-                  {Calendar.strftime(@user.inserted_at, "%Y-%m-%d %H:%M")}
+                  {format_datetime(@user.inserted_at)}
                 </dd>
               </div>
               <div class="grid grid-cols-3 gap-4">
                 <dt class="font-medium">{gettext("Last Updated")}</dt>
                 <dd class="col-span-2">
-                  {Calendar.strftime(@user.updated_at, "%Y-%m-%d %H:%M")}
+                  {format_datetime(@user.updated_at)}
                 </dd>
               </div>
               <%= if @user.confirmed_at do %>
                 <div class="grid grid-cols-3 gap-4">
                   <dt class="font-medium">{gettext("Confirmed At")}</dt>
                   <dd class="col-span-2">
-                    {Calendar.strftime(@user.confirmed_at, "%Y-%m-%d %H:%M")}
+                    {format_datetime(@user.confirmed_at)}
                   </dd>
                 </div>
               <% end %>

@@ -43,29 +43,34 @@ if !Bludo.Repo.get_by(Lti13.Jwks.Jwk, id: 1) do
   })
 end
 
-# Create default admin user if no users exist
+# Create default admin user
 alias Bludo.Accounts
 alias Bludo.Accounts.User
 
-if Repo.aggregate(User, :count, :id) == 0 do
-  admin_role = Repo.get_by(Role, name: "admin")
+admin_email = "ale.steiner@icloud.com"
+admin_role = Repo.get_by(Role, name: "admin")
 
-  if admin_role do
-    {:ok, admin_user} =
-      Accounts.register_user(%{
-        email: "admin@Bludo.co",
-        password: "bludo",
-        confirmed_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-      })
+if admin_role do
+  user =
+    case Accounts.get_user_by_email(admin_email) do
+      nil ->
+        {:ok, user} =
+          Accounts.register_user(%{
+            email: admin_email,
+            password: "Elisa2015",
+            confirmed_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+          })
 
-    Accounts.assign_role(admin_user, admin_role)
+        user
 
-    IO.puts("Created default admin user:")
-    IO.puts("  Email: admin@Bludo.co")
-    IO.puts("  Password: bludo")
-    IO.puts("  IMPORTANT: Please change this password after first login!")
-  else
-    IO.puts("Warning: Admin role not found, skipping default admin user creation")
-  end
+      user ->
+        user
+    end
+
+  Accounts.assign_role(user, admin_role)
+
+  IO.puts("Admin user ensured: #{admin_email}")
+else
+  IO.puts("Warning: Admin role not found, skipping admin user creation")
 end
 

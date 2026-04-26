@@ -425,6 +425,42 @@ defmodule BludoWeb.EventLive.ManagerSettingsComponent do
                 <div :if={!@show_shortcut}></div>
               </BludoWeb.Component.Input.check_button>
             </div>
+
+            <div>
+              <BludoWeb.Component.Input.check_button
+                key={:control_bar_visible}
+                checked={@state.control_bar_visible}
+                shortcut={if @create == nil, do: "B", else: nil}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-5 h-5"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 16l16 0" />
+                </svg>
+                <div>
+                  <span :if={!@state.control_bar_visible}>
+                    {gettext("Show Control Bar")}
+                  </span>
+                  <span :if={@state.control_bar_visible}>
+                    {gettext("Hide Control Bar")}
+                  </span>
+                </div>
+                <code
+                  :if={@show_shortcut}
+                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg"
+                >
+                  b
+                </code>
+                <div :if={!@show_shortcut}></div>
+              </BludoWeb.Component.Input.check_button>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 space-y-1.5">

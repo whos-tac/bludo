@@ -9,233 +9,17 @@
   include: toggle;
 }
 
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-* {
-  font-family: var(--font-family-sans);
-}
-
-[x-cloak] { display: none !important; }
-
-/* Alerts and form errors used by phx.new */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.alert-info {
-  color: var(--color-primary-700);
-  background-color: var(--color-primary-100);
-  border-color: var(--color-primary-200);
-}
-.alert-warning {
-  color: var(--color-supporting-yellow-700);
-  background-color: var(--color-supporting-yellow-50);
-  border-color: var(--color-supporting-yellow-100);
-}
-.alert-danger {
-  color: var(--color-supporting-red-700);
-  background-color: var(--color-supporting-red-100);
-  border-color: var(--color-supporting-red-200);
-}
-.alert p {
-  margin-bottom: 0;
-}
-.alert:empty {
-  display: none;
-}
-.invalid-feedback {
-  color: var(--color-supporting-red-700);
-  display: block;
-  margin-top: 2px;
-}
-
-/* LiveView specific classes for your customization */
-.phx-no-feedback.invalid-feedback,
-.phx-no-feedback .invalid-feedback {
-  display: none;
-}
-
-.phx-click-loading {
-  opacity: 0.5;
-  transition: opacity 1s ease-out;
-}
-
-.phx-disconnected{
-  cursor: wait;
-}
-.phx-disconnected *{
-  pointer-events: none;
-}
-
-.phx-modal {
-  opacity: 1!important;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-}
-
-.phx-modal-content {
-  background-color: #fefefe;
-  margin: 15vh auto;
-  padding: 20px;
-  border: 1px solid var(--color-neutral-300);
-  width: 80%;
-  box-shadow: var(--shadow-lg);
-}
-
-.phx-modal-close {
-  color: var(--color-neutral-400);
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.phx-modal-close:hover,
-.phx-modal-close:focus {
-  color: var(--color-neutral-900);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/** 
- Forms
- **/
-.input:focus~.label,
-.input:active~.label,
-.input.filled~.label {
-  font-size: 0.875rem;
-  transition-property: all;
-  transition-duration: 100ms;
-  top: -0.375rem;
-  color: var(--color-primary-500);
-}
-
-.input:focus~.icon,
-.input:active~.icon,
-.input.filled~.icon {
-  transition-property: all;
-  transition-duration: 100ms;
-  left: 0.75rem;
-  top: 1.5rem;
-  height: 1.25rem;
-}
-
-.date-placeholder-hidden::-webkit-datetime-edit {
-  display: none;
-}
-
-
-.date-placeholder-hidden::-webkit-inner-spin-button,
-.date-placeholder-hidden::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
-
-/**
- Custom fonts
-**/
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
-  src: url('/fonts/Inter-VariableFont.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'DIN Condensed';
-  font-style: normal;
-  font-weight: 700;
-  src: url('/fonts/DINCondensed-Bold.ttf') format('truetype');
-}
-
-.bg-gradient-animate {
-  background: linear-gradient(-45deg, var(--color-secondary-500), var(--color-secondary-600), var(--color-primary-400), var(--color-primary-400));
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.arrow_box {
-	position: relative;
-	background: #fff;
-	border: 2px solid var(--color-neutral-100);
-}
-.arrow_box.arrow_right:after, .arrow_box.arrow_right:before {
-	left: 100%;
-	top: 50%;
-	border: solid transparent;
-	content: "";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-.arrow_box.arrow_right:after {
-	border-color: rgba(255, 255, 255, 0);
-	border-left-color: #fff;
-	border-width: 15px;
-	margin-top: -15px;
-}
-.arrow_box.arrow_right:before {
-	border-color: rgba(225, 225, 225, 0);
-	border-left-color: #e1e1e1;
-	border-width: 18px;
-	margin-top: -18px;
-}
-
-.arrow_box.arrow_left:after, .arrow_box.arrow_left:before {
-	right: 100%;
-	top: 50%;
-	border: solid transparent;
-	content: "";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-.arrow_box.arrow_left:after {
-	border-color: rgba(255, 255, 255, 0);
-	border-right-color: #fff;
-	border-width: 15px;
-	margin-top: -15px;
-}
-.arrow_box.arrow_left:before {
-	border-color: rgba(225, 225, 225, 0);
-	border-right-color: #e1e1e1;
-	border-width: 18px;
-	margin-top: -18px;
-}
-
 :root {
+  /* DaisyUI Overrides to match BULME */
+  --p: 204 57% 52%; /* #3A8FCC - Button Blue */
+  --s: 204 60% 16%; /* #102D41 - BULME Blue */
+  --a: 201 98% 77%; /* #8CD4FE - Light Blue Accent */
+  --n: 210 20% 98%; /* #F8F9FA - Neutral */
+  --b1: 0 0% 100%;  /* #FFFFFF - Base 100 */
+  --bc: 0 0% 10%;   /* #1A1A1A - Text Main */
+  
+  --rounded-btn: 0.5rem;
+  --rounded-box: 1rem;
   --animate-duration: 0.3s;
 }
 
@@ -324,4 +108,77 @@
 
 .animate__slow_slow {
   --animate-duration: 5s;
+}
+
+#sidebar-zone {
+  position: relative;
+}
+
+#sidebar-zone.resize-x {
+  border-left: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+#sidebar-zone.resize-x:hover, #sidebar-zone.resize-x:active {
+  border-left: 4px solid var(--p);
+}
+
+/* Custom scrollbar to keep it clean */
+#sidebar-zone::-webkit-scrollbar {
+  width: 6px;
+}
+#sidebar-zone::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+#sidebar-zone::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+.gutter {
+  background-color: #f3f4f6;
+  position: relative;
+  z-index: 50;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gutter:hover {
+  background-color: #3A8FCC;
+}
+
+/* Elegant drag handle icon inside gutter */
+.gutter::after {
+  content: "";
+  transition: border-color 0.2s;
+}
+
+.gutter.gutter-horizontal::after {
+  width: 4px;
+  height: 24px;
+  border-left: 2px solid #d1d5db;
+  border-right: 2px solid #d1d5db;
+}
+
+.gutter.gutter-vertical::after {
+  width: 24px;
+  height: 4px;
+  border-top: 2px solid #d1d5db;
+  border-bottom: 2px solid #d1d5db;
+}
+
+.gutter:hover::after {
+  border-color: white;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  width: 8px;
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  height: 8px;
 }

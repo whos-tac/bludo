@@ -101,6 +101,7 @@ defmodule BludoWeb do
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
       import Phoenix.Component
       import BludoWeb.LiveHelpers
+      import BludoWeb.Helpers
       alias Phoenix.LiveView.JS
 
       # Import basic rendering functionality (render, render_layout, etc)

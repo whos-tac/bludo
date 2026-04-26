@@ -10,30 +10,32 @@ export class Manager {
   }
 
   init() {
-    this.context.handleEvent("page-manage", (data) => {
+    this.pageManageHandler = (data) => {
       var el = document.getElementById("slide-preview-" + data.current_page);
 
       if (el) {
         setTimeout(
           () => {
             const slidesLayout = document.getElementById("slides-layout");
-            const layoutWidth = slidesLayout.clientWidth;
-            const elementWidth = el.children[0].scrollWidth;
+            if (!slidesLayout) return;
+
+            const layoutHeight = slidesLayout.clientHeight;
+            const elementHeight = el.scrollHeight;
             const scrollPosition =
-              el.children[0].offsetLeft - layoutWidth / 2 + elementWidth / 2;
+              el.offsetTop - layoutHeight / 2 + elementHeight / 2;
 
             slidesLayout.scrollTo({
-              left: scrollPosition,
+              top: scrollPosition,
+              behavior: "smooth"
             });
           },
           data.timeout ? data.timeout : 0
         );
       }
-    });
+    };
 
-    window.addEventListener("keydown", (e) => {
+    this.keydownHandler = (e) => {
       if ((e.target.tagName || "").toLowerCase() != "input") {
-
         switch (e.key) {
           case "ArrowLeft":
             e.preventDefault();
@@ -45,9 +47,16 @@ export class Manager {
             break;
         }
       }
-    });
+    };
+
+    this.context.handleEvent("page-manage", this.pageManageHandler);
+    window.addEventListener("keydown", this.keydownHandler);
 
     this.initPreview();
+  }
+
+  destroy() {
+    window.removeEventListener("keydown", this.keydownHandler);
   }
 
   initPreview() {
@@ -146,13 +155,15 @@ export class Manager {
     if (el) {
       setTimeout(() => {
         const slidesLayout = document.getElementById("slides-layout");
-        const layoutWidth = slidesLayout.clientWidth;
-        const elementWidth = el.children[0].scrollWidth;
+        if (!slidesLayout) return;
+
+        const layoutHeight = slidesLayout.clientHeight;
+        const elementHeight = el.scrollHeight;
         const scrollPosition =
-          el.children[0].offsetLeft - layoutWidth / 2 + elementWidth / 2;
+          el.offsetTop - layoutHeight / 2 + elementHeight / 2;
 
         slidesLayout.scrollTo({
-          left: scrollPosition,
+          top: scrollPosition,
           behavior: "smooth",
         });
       }, 50);

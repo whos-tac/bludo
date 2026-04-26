@@ -137,7 +137,7 @@
                             <% end %>
                           </td>
                           <td>
-                            {Calendar.strftime(provider.inserted_at, "%Y-%m-%d %H:%M")}
+                            {format_datetime(provider.inserted_at)}
                           </td>
                           <td class="text-right">
                             <div class="flex justify-end gap-2">
@@ -295,13 +295,13 @@
               <div class="grid grid-cols-3 gap-4">
                 <dt class="font-medium">{gettext("Created At")}</dt>
                 <dd class="col-span-2">
-                  {Calendar.strftime(@provider.inserted_at, "%Y-%m-%d %H:%M")}
+                  {format_datetime(@provider.inserted_at)}
                 </dd>
               </div>
               <div class="grid grid-cols-3 gap-4">
                 <dt class="font-medium">{gettext("Last Updated")}</dt>
                 <dd class="col-span-2">
-                  {Calendar.strftime(@provider.updated_at, "%Y-%m-%d %H:%M")}
+                  {format_datetime(@provider.updated_at)}
                 </dd>
               </div>
             </dl>

@@ -24,7 +24,6 @@ import "moment/locale/lv";
 import QRCodeStyling from "qr-code-styling";
 import { Presenter } from "./presenter";
 import { Manager } from "./manager";
-import Split from "split-grid";
 import CustomHooks from "./hooks";
 import { TourGuideClient } from "@sjmc11/tourguidejs/src/Tour";
 import "./admin-charts.js";
@@ -100,110 +99,76 @@ Hooks.EmbeddedBanner = {
 Hooks.TourGuide = {
   mounted() {
     this.triggerDiv = document.querySelector(this.el.dataset.btnTrigger);
+    if (!this.triggerDiv) return;
     this.btnTrigger = this.triggerDiv.querySelector(".open");
     this.closeBtnTrigger = this.triggerDiv.querySelector(".close");
+    if (!this.btnTrigger) return;
 
     this.tour = new TourGuideClient({
       nextLabel: this.el.dataset.nextLabel,
       prevLabel: this.el.dataset.prevLabel,
       finishLabel: this.el.dataset.finishLabel,
-      completeOnFinish: true,
-      rememberStep: true,
+      completeOnFinish: false,
+      rememberStep: false,
     });
 
-    if (!this.tour.isFinished(this.el.dataset.group)) {
-      this.triggerDiv.classList.remove("hidden");
+    // Define manage view steps if group matches
+    if (this.el.dataset.group === "manage") {
+      this.tour.addSteps([
+        {
+          title: "Event Dashboard",
+          content: "Welcome to your Event Manager! Use this header to track posts and access the big-screen presenter.",
+          target: "#dashboard-header",
+          order: 0
+        },
+        {
+          title: "Slide Navigation",
+          content: "Browse and select your presentation slides here. Click any thumbnail to jump to that page.",
+          target: "#slides-list-column",
+          order: 1
+        },
+        {
+          title: "Real-time Preview",
+          content: "This area shows exactly what your audience sees. It updates instantly as you navigate.",
+          target: "#preview-zone",
+          order: 2
+        },
+        {
+          title: "Control Panel",
+          content: "Manage polls, Q&A, and settings here. TIP: Drag the blue lines to customize your layout!",
+          target: "#sidebar-zone",
+          order: 3
+        },
+        {
+          title: "Big Screen View",
+          content: "When you're ready to start, open the Presenter view to project onto the main screen.",
+          target: "a[data-tg-order='4']",
+          order: 4
+        }
+      ]);
     }
 
-    this.tour.onBeforeExit(() => {
-      this.tour.finishTour(true, this.el.dataset.group);
-    });
+    this.triggerDiv.classList.remove("hidden");
 
     this.btnTrigger.addEventListener("click", () => {
       this.startTour();
     });
 
-    this.closeBtnTrigger.addEventListener("click", (e) => {
-      this.triggerDiv.classList.add("hidden");
-      this.tour.finishTour(true, this.el.dataset.group);
-    });
+    if (this.closeBtnTrigger) {
+      this.closeBtnTrigger.addEventListener("click", (e) => {
+        this.triggerDiv.classList.add("hidden");
+      });
+    }
   },
 
   startTour() {
-    this.triggerDiv.classList.add("hidden");
-    this.tour.start(this.el.dataset.group);
+    this.tour.start();
   },
   destroyed() {
-    this.btnTrigger.removeEventListener("click", () => {
-      this.startTour();
-    });
-    this.closeBtnTrigger.removeEventListener("click", () => {
-      this.triggerDiv.classList.add("hidden");
-      this.tour.finishTour(true, this.el.dataset.group);
-    });
-  },
-};
-
-Hooks.Split = {
-  mounted() {
-    const type = this.el.dataset.type;
-    const id = this.el.id;
-    const gutter = this.el.dataset.gutter;
-    const forceLayout = this.el.classList.contains("grid-cols-[1fr]");
-    const columnSlitValue =
-      localStorage.getItem(`column-split-${id}`) || "1fr 10px 1fr";
-    const rowSlitValue =
-      localStorage.getItem(`row-split-${id}`) || "0.5fr 10px 1fr";
-
-    if (type === "column") {
-      this.columnSplit = Split({
-        columnGutters: [
-          {
-            track: 1,
-            element: this.el.querySelector(gutter),
-          },
-        ],
-        onDragEnd: () => {
-          const currentPosition = this.el.style["grid-template-columns"];
-          localStorage.setItem(`column-split-${id}`, currentPosition);
-        },
+    if (this.btnTrigger) {
+      this.btnTrigger.removeEventListener("click", () => {
+        this.startTour();
       });
-      if (!forceLayout) {
-        this.el.style["grid-template-columns"] = columnSlitValue;
-      }
-    } else {
-      this.rowSplit = Split({
-        rowGutters: [
-          {
-            track: 1,
-            element: this.el.querySelector(gutter),
-          },
-        ],
-        onDragEnd: () => {
-          const value = this.el.style["grid-template-rows"];
-          localStorage.setItem(`row-split-${id}`, value);
-        },
-      });
-      if (!forceLayout) {
-        this.el.style["grid-template-rows"] = rowSlitValue;
-      }
-    }
-  },
-  updated() {
-    const id = this.el.id;
-    const forceLayout = this.el.classList.contains("grid-cols-[1fr]");
-    if (forceLayout) {
-      return;
-    }
-
-    this.mounted();
-  },
-  destroyed() {
-    if (this.columnSplit) {
-      this.columnSplit.destroy();
-    }
-    if (this.rowSplit) {
-      this.rowSplit.destroy();
     }
   },
 };
@@ -430,6 +395,9 @@ Hooks.Presenter = {
   updated() {
     this.presenter.update();
   },
+  destroyed() {
+    this.presenter.destroy();
+  },
 };
 Hooks.Manager = {
   mounted() {
@@ -438,6 +406,9 @@ Hooks.Manager = {
   },
   updated() {
     this.manager.update();
+  },
+  destroyed() {
+    this.manager.destroy();
   },
 };
 Hooks.OpenPresenter = {
@@ -505,6 +476,7 @@ Hooks.JoinEvent = {
     const loading = document.getElementById("loading");
     const submit = document.getElementById("submit");
     const input = document.getElementById("input");
+    if (!submit || !loading || !input) return;
 
     submit.addEventListener("click", (e) => {
       if (input.value.length > 0) {
@@ -517,6 +489,7 @@ Hooks.JoinEvent = {
     const loading = document.getElementById("loading");
     const submit = document.getElementById("submit");
     const input = document.getElementById("input");
+    if (!submit || !loading || !input) return;
 
     submit.removeEventListener("click", (e) => {
       if (input.value.length > 0) {
@@ -530,19 +503,23 @@ Hooks.WelcomeEarly = {
   mounted() {
     if (localStorage.getItem("welcome-early") !== "false") {
       this.el.style.display = "block";
-      this.el.children[0].addEventListener("click", (e) => {
+      if (this.el.children[0]) {
+        this.el.children[0].addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.setItem("welcome-early", "false");
+          this.el.style.display = "none";
+        });
+      }
+    }
+  },
+  destroyed() {
+    if (this.el.children[0]) {
+      this.el.children[0].removeEventListener("click", (e) => {
         e.preventDefault();
         localStorage.setItem("welcome-early", "false");
         this.el.style.display = "none";
       });
     }
-  },
-  destroyed() {
-    this.el.children[0].removeEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.setItem("welcome-early", "false");
-      this.el.style.display = "none";
-    });
   },
 };
 Hooks.ClickFeedback = {
@@ -614,13 +591,18 @@ Hooks.QRCode = {
     this.draw();
     if (this.el.dataset.getUrl) {
       setTimeout(() => {
-        var dataURL = this.qrCode._canvas.toDataURL();
-        document.getElementById("qr-url").value = dataURL;
+        if (this.qrCode && this.qrCode._canvas) {
+          var dataURL = this.qrCode._canvas.toDataURL();
+          const qrUrlEl = document.getElementById("qr-url");
+          if (qrUrlEl) qrUrlEl.value = dataURL;
+        }
       }, 500);
     }
   },
   updated() {},
-  destroyed() {},
+  destroyed() {
+     window.removeEventListener("resize", this.draw.bind(this));
+  },
 };
 
 Hooks.Dropdown = {
@@ -634,7 +616,9 @@ Hooks.Dropdown = {
 Hooks.AdminChart = {
   mounted() {
     const chartType = this.el.dataset.chartType;
-    const canvasId = this.el.querySelector('canvas').id;
+    const canvas = this.el.querySelector('canvas');
+    if (!canvas) return;
+    const canvasId = canvas.id;
     const data = JSON.parse(this.el.dataset.chartData);
     
     if (chartType === 'users') {
@@ -650,7 +634,9 @@ Hooks.AdminChart = {
   
   updated() {
     const chartType = this.el.dataset.chartType;
-    const canvasId = this.el.querySelector('canvas').id;
+    const canvas = this.el.querySelector('canvas');
+    if (!canvas) return;
+    const canvasId = canvas.id;
     const data = JSON.parse(this.el.dataset.chartData);
     
     if (chartType === 'users') {
@@ -661,8 +647,10 @@ Hooks.AdminChart = {
   },
   
   destroyed() {
-    const canvasId = this.el.querySelector('canvas').id;
-    window.AdminCharts.destroyChart(canvasId);
+    const canvas = this.el.querySelector('canvas');
+    if (canvas) {
+      window.AdminCharts.destroyChart(canvas.id);
+    }
   }
 };
 

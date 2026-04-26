@@ -6,23 +6,31 @@ defmodule BludoWeb.UserLiveAuth do
     endpoint: BludoWeb.Endpoint,
     router: BludoWeb.Router
 
-  def on_mount(:default, _params, %{"current_user" => current_user} = _session, socket) do
-    socket = assign_new(socket, :current_user, fn -> current_user end)
+  def on_mount(:default, _params, session, socket) do
+    user = 
+      case session do
+        %{"current_user" => user} when not is_nil(user) -> user
+        %{"user_token" => token} when not is_nil(token) -> Bludo.Accounts.get_user_by_session_token(token)
+        _ -> nil
+      end
 
-    cond do
-      not Application.get_env(:bludo, :email_confirmation) ->
-        {:cont, socket}
+    if user do
+      socket = assign_new(socket, :current_user, fn -> user end)
 
-      current_user.confirmed_at ->
-        {:cont, socket}
+      cond do
+        not Application.get_env(:bludo, :email_confirmation) ->
+          {:cont, socket}
 
-      true ->
-        {:halt, redirect(socket, to: ~p"/users/register/confirm")}
+        user.confirmed_at ->
+          {:cont, socket}
+
+        true ->
+          {:halt, redirect(socket, to: ~p"/users/register/confirm")}
+      end
+    else
+      {:halt, redirect(socket, to: ~p"/users/log_in")}
     end
   end
-
-  def on_mount(:default, _params, _session, socket),
-    do: {:halt, redirect(socket, to: ~p"/users/register/confirm")}
 end
 
 

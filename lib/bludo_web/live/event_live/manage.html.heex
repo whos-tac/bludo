@@ -1,311 +1,267 @@
 <div
-  id="manager"
+  id="manager-dashboard"
+  class="relative h-screen flex flex-col overflow-hidden bg-gray-50"
   x-data={"{date: moment.utc('#{@event.expired_at}').local().format('lll')}"}
   phx-hook="Manager"
   data-max-page={@event.presentation_file.length}
   data-current-page={@state.position}
 >
-  <div id="product-tour-btn" class="hidden fixed bottom-5 right-5 z-30">
-    <button class="close absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
-        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-      </svg>
-    </button>
-    <button class="open text-sm text-primary-500 bg-white shadow-md border border-primary-500 rounded-md pl-2 pr-4 py-2 flex items-center justify-center space-x-2">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
-        <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM8.94 6.94a.75.75 0 1 1-1.061-1.061 3 3 0 1 1 2.871 5.026v.345a.75.75 0 0 1-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 1 0 8.94 6.94ZM10 15a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
-      </svg>
-      <span>{gettext("How it works ?")}</span>
-    </button>
-  </div>
-
-  <div
-    :if={@preview}
-    id="preview"
-    class="h-1/3 w-4/5 md:w-2/3 lg:w-1/3 bg-gray-200 absolute bottom-5 right-5 z-50 rounded-md shadow-base transform"
-  >
-    <button phx-click="toggle-preview" class="absolute top-2 right-2 text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-      </svg>
-    </button>
-    <iframe class="w-full h-full rounded-md pointer-events-none" src={~p"/e/#{@event.code}/presenter?iframe"}></iframe>
-  </div>
-
-  <div
-    id="settings-modal"
-    class={"#{if !@settings_modal, do: "hidden"} fixed z-30 inset-0 overflow-y-auto p-4 sm:p-6 md:p-24 transform transition-all duration-150"}
-    role="dialog"
-    aria-modal="true"
-  >
-    <div phx-click={toggle_settings_modal()} class="fixed inset-0 bg-gray-800/75 transition-opacity w-full h-full -z-10" aria-hidden="true"></div>
-    <div class="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all relative">
-      <button phx-click={toggle_settings_modal()} class="absolute right-0 top-0">
-        <svg class="text-gray-500 h-9 transform rotate-45" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-        </svg>
-      </button>
-      <div id="settings-modal-content" class="bg-white p-4">
-        <.live_component
-          id="settings-modal-pane"
-          module={BludoWeb.EventLive.ManagerSettingsComponent}
-          create={@create}
-          state={@state}
-          show_shortcut={false}
-          current_interaction={@current_interaction}
-        />
-      </div>
-    </div>
-  </div>
-
   <div
     :if={@interaction_modal}
-    id="interaction-modal"
-    class="fixed z-30 inset-0 overflow-y-auto p-4 sm:p-6 md:p-24 transform transition-all duration-150"
+    id="interaction-modal-container"
+    class="fixed z-40 inset-0 overflow-y-auto p-4 sm:p-6 md:p-24 transform transition-all duration-150"
     role="dialog"
     aria-modal="true"
   >
-    <div phx-click="toggle-interaction-modal" class="fixed inset-0 bg-gray-800/75 transition-opacity w-full h-full -z-10" aria-hidden="true"></div>
-    <div class="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all relative">
-      <button phx-click="toggle-interaction-modal" class="absolute right-0 top-0">
-        <svg class="text-gray-500 h-9 transform rotate-45" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-        </svg>
-      </button>
-      <div id="modal-content">
-        <%= if @create==nil do %>
-          <div class="p-8 text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">{gettext("Add new interaction")}</h2>
-            <div class="grid grid-cols-2 gap-4" id="options">
-              <a href={~p"/e/#{@event.code}/manage/add/poll"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/poll")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                </div>
-                <p class="font-bold text-gray-900">{gettext("Poll")}</p>
-              </a>
-              <a href={~p"/e/#{@event.code}/manage/add/quiz"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/quiz")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.989-2.386l-.548-.547z" /></svg>
-                </div>
-                <p class="font-bold text-gray-900">{gettext("Quiz")}</p>
-              </a>
-              <a href={~p"/e/#{@event.code}/manage/add/form"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/form")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-                </div>
-                <p class="font-bold text-gray-900">{gettext("Open text / Form")}</p>
-              </a>
+    <div phx-click="toggle-interaction-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity z-40" aria-hidden="true"></div>
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4 sm:p-6">
+        <div class="relative w-full max-w-4xl transform overflow-hidden rounded-3xl bg-white shadow-2xl transition-all">
+          <div id="modal-content-area">
+            <div class="absolute right-6 top-6 z-10">
+              <button type="button" phx-click="toggle-interaction-modal" class="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
             </div>
+            <%= if @create==nil do %>
+              <div class="p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">{gettext("Add new interaction")}</h2>
+                <div class="grid grid-cols-2 gap-4" id="interaction-options">
+                  <a href={~p"/e/#{@event.code}/manage/add/poll"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/poll")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    </div>
+                    <p class="font-bold text-gray-900">{gettext("Poll")}</p>
+                  </a>
+                  <a href={~p"/e/#{@event.code}/manage/add/quiz"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/quiz")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.989-2.386l-.548-.547z" /></svg>
+                    </div>
+                    <p class="font-bold text-gray-900">{gettext("Quiz")}</p>
+                  </a>
+                  <a href={~p"/e/#{@event.code}/manage/add/form"} phx-click={JS.patch(~p"/e/#{@event.code}/manage/add/form")} class="group p-6 rounded-2xl border-2 border-gray-50 hover:border-primary-500 hover:bg-primary-50 transition-all text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    </div>
+                    <p class="font-bold text-gray-900">{gettext("Open text / Form")}</p>
+                  </a>
+                </div>
+              </div>
+            <% end %>
+            <%= if @create=="poll" do %>
+              <div class="p-6 bg-white">
+                <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New poll"), else: gettext("Edit poll")}</h2>
+                <.live_component module={BludoWeb.PollLive.FormComponent} id="poll-create-modal" event_uuid={@event.uuid} presentation_file={@event.presentation_file} poll={@poll} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
+              </div>
+            <% end %>
+            <%= if @create=="form" do %>
+              <div class="p-6 bg-white">
+                <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New form"), else: gettext("Edit form")}</h2>
+                <.live_component module={BludoWeb.FormLive.FormComponent} id="form-create-modal" event_uuid={@event.uuid} presentation_file={@event.presentation_file} form={@form} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
+              </div>
+            <% end %>
+            <%= if @create=="quiz" do %>
+              <div class="p-6 bg-white">
+                <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New quiz"), else: gettext("Edit quiz")}</h2>
+                <.live_component module={BludoWeb.QuizLive.QuizComponent} id="quiz-create-modal" event={@event} presentation_file={@event.presentation_file} quiz={@quiz} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
+              </div>
+            <% end %>
+            <%= if @create=="presentation" do %>
+              <div class="p-8 bg-white">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">{gettext("Upload Presentation")}</h2>
+                <.live_component
+                  module={BludoWeb.EventLive.EventFormComponent}
+                  id="event-presentation-upload-modal"
+                  event={@event}
+                  action={:edit}
+                  return_to={~p"/e/#{@event.code}/manage"}
+                  current_user={@current_user}
+                />
+              </div>
+            <% end %>
           </div>
-        <% end %>
-        <%= if @create=="poll" do %>
-          <div class="p-6 bg-white">
-            <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New poll"), else: gettext("Edit poll")}</h2>
-            <.live_component module={BludoWeb.PollLive.FormComponent} id="poll-create" event_uuid={@event.uuid} presentation_file={@event.presentation_file} poll={@poll} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
-          </div>
-        <% end %>
-        <%= if @create=="form" do %>
-          <div class="p-6 bg-white">
-            <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New form"), else: gettext("Edit form")}</h2>
-            <.live_component module={BludoWeb.FormLive.FormComponent} id="form-create" event_uuid={@event.uuid} presentation_file={@event.presentation_file} form={@form} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
-          </div>
-        <% end %>
-        <%= if @create=="quiz" do %>
-          <div class="p-6 bg-white">
-            <h2 class="text-xl font-bold mb-4">{if @create_action == :new, do: gettext("New quiz"), else: gettext("Edit quiz")}</h2>
-            <.live_component module={BludoWeb.QuizLive.QuizComponent} id="quiz-create" event={@event} presentation_file={@event.presentation_file} quiz={@quiz} live_action={@create_action} position={@state.position} return_to={~p"/e/#{@event.code}/manage"} />
-          </div>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="wrapper" class="flex h-screen bg-white overflow-hidden" phx-hook="TourGuide" data-group="manage">
-    <!-- SIDEBAR -->
-    <div class="w-64 bg-gray-50 border-r border-gray-100 flex flex-col p-4">
-      <div class="flex items-center space-x-2 mb-8 px-2">
+  <!-- TOP BAR -->
+  <header 
+    id="dashboard-header" 
+    class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-30 shadow-sm"
+    phx-hook="TourGuide" 
+    data-group="manage" 
+    data-btn-trigger="#product-tour-btn-header"
+    data-next-label={gettext("Next")}
+    data-prev-label={gettext("Back")}
+    data-finish-label={gettext("Got it!")}
+  >
+    <div class="flex items-center space-x-6" data-tg-tour={gettext("Welcome to your Event Manager! Here is everything you need to host.")} data-tg-order="0">
+      <div class="flex items-center space-x-3">
         <img src="/images/bulme_logo_blue.png" class="h-8" />
-        <span class="font-bold text-gray-900 truncate">{@event.name}</span>
+        <h1 class="font-bold text-gray-900 truncate max-w-xs">{@event.name}</h1>
       </div>
-      <div class="space-y-6">
-        <div>
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest px-2 mb-4">{gettext("Interactions")}</p>
-          <button phx-click="toggle-interaction-modal" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors shadow-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-            <span>{gettext("Add")}</span>
-          </button>
+      <div class="h-6 w-px bg-gray-200"></div>
+      <div class="flex items-center space-x-4 text-sm">
+        <div class="bg-primary-50 text-primary-700 px-3 py-1 rounded-full font-bold">
+          #{@event.code}
         </div>
-        <div class="pt-6 border-t border-gray-100">
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest px-2 mb-4">{gettext("Audience")}</p>
-          <div phx-click="toggle-chat" class={"cursor-pointer p-3 rounded-lg flex items-center space-x-3 transition-colors #{if @state.chat_visible, do: "bg-white shadow-sm border border-gray-100", else: "hover:bg-gray-100"}"}>
-            <div class="p-2 rounded bg-Supporting-Red-50 text-Supporting-Red-500">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" /></svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-sm font-bold text-gray-900">{gettext("Questions")}</p>
-              <p class="text-xs text-gray-400">{@post_count} {gettext("posts")}</p>
-            </div>
-          </div>
+        <div class="flex items-center space-x-2 text-gray-500">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          <span class="font-medium">{@post_count} {gettext("posts")}</span>
         </div>
-      </div>
-      <div class="mt-auto pt-6 border-t border-gray-100 space-y-4">
-        <div class="px-2">
-          <p class="text-xs font-bold text-gray-400 mb-1">{gettext("Event code")}</p>
-          <p class="text-lg font-bold text-gray-900">#{@event.code}</p>
-        </div>
-        <a href={~p"/events"} class="flex items-center space-x-2 px-2 py-2 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-          <span>{gettext("Back to events")}</span>
-        </a>
       </div>
     </div>
 
-    <!-- MAIN AREA -->
-    <div class="flex-1 flex flex-col overflow-hidden bg-white">
-      <header class="h-16 border-b border-gray-100 px-6 flex items-center justify-between bg-white shrink-0">
-        <div class="flex items-center space-x-6">
-          <div class="flex items-center text-sm text-gray-500">
-            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            {Calendar.strftime(@event.expired_at, "%b %d, %Y")}
-          </div>
-          <div class="flex items-center text-sm text-gray-500">
-            <svg class="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" /></svg>
-            <span id="attendees-count" phx-update="ignore" phx-hook="UpdateAttendees">{@attendees_nb}</span>
-          </div>
-        </div>
-        <div class="flex items-center space-x-3">
-          <button phx-click="toggle-preview" class="px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-200 transition-colors">{gettext("Preview")}</button>
-          <button phx-hook="OpenPresenter" id={"openPresenter-header-#{@event.uuid}"} data-url={~p"/e/#{@event.code}/presenter"} class="px-6 py-2 text-sm font-bold text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-colors flex items-center">
-            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.722 9h4.556l-.11-.443a1 1 0 00-.164-.348L12 12.192l-1.004.016a1 1 0 00-.164.348l-.11.443z" clip-rule="evenodd" /></svg>
-            {gettext("Present")}
-          </button>
-        </div>
-      </header>
-
-      <div class="flex-1 flex overflow-hidden">
-        <!-- INTERACTIONS COLUMN -->
-        <div id="interactions" class="w-1/2 border-r border-gray-100 flex flex-col bg-white">
-          <div class="p-6 border-b border-gray-50 flex justify-between items-center">
-            <h3 class="font-bold text-gray-900">{gettext("Polls")}</h3>
-            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{Enum.count(@interactions)} {gettext("Total")}</span>
-          </div>
-          <div class="flex-1 overflow-y-auto p-6 space-y-4">
-            <%= if length(@interactions) == 0 do %>
-              <div class="h-full flex flex-col items-center justify-center text-center p-8">
-                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                  <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                </div>
-                <h4 class="font-bold text-gray-900 mb-2">{gettext("No interactions yet")}</h4>
-                <button phx-click="toggle-interaction-modal" class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">{gettext("Create Poll")}</button>
-              </div>
-            <% end %>
-            <%= for interaction <- @interactions do %>
-              <div class={"group border-2 rounded-xl p-4 transition-all #{if interaction.enabled, do: "border-primary-500 bg-primary-50/30", else: "border-gray-100 hover:border-gray-200"}"}>
-                <div class="flex items-start justify-between mb-2">
-                  <div class="flex items-center space-x-2">
-                    <span class="text-[10px] font-bold text-white bg-gray-400 px-1.5 py-0.5 rounded uppercase tracking-wider">
-                      <%= case interaction do %>
-                        <% %Bludo.Polls.Poll{} -> %>{gettext("Poll")}
-                        <% %Bludo.Quizzes.Quiz{} -> %>{gettext("Quiz")}
-                        <% %Bludo.Forms.Form{} -> %>{gettext("Form")}
-                        <% _ -> %>{gettext("Other")}
-                      <% end %>
-                    </span>
-                    <%= if interaction.enabled do %>
-                      <span class="flex h-2 w-2 rounded-full bg-primary-500"></span>
-                    <% end %>
-                  </div>
-                  <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a
-                      href={
-                        case interaction do
-                          %Bludo.Polls.Poll{} -> ~p"/e/#{@event.code}/manage/edit/poll/#{interaction.id}"
-                          %Bludo.Quizzes.Quiz{} -> ~p"/e/#{@event.code}/manage/edit/quiz/#{interaction.id}"
-                          %Bludo.Forms.Form{} -> ~p"/e/#{@event.code}/manage/edit/form/#{interaction.id}"
-                          _ -> "#"
-                        end
-                      }
-                      class="p-1 text-gray-400 hover:text-gray-900"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-                <h5 class="font-bold text-gray-900 mb-4 line-clamp-2">{interaction.title}</h5>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{interaction.vote_count || 0} {gettext("responses")}</span>
-                  <button
-                    phx-click={if interaction.enabled, do: "interaction-disable", else: "interaction-enable"}
-                    phx-value-id={interaction.id}
-                    phx-value-type={
-                      case interaction do
-                        %Bludo.Polls.Poll{} -> "poll"
-                        %Bludo.Quizzes.Quiz{} -> "quiz"
-                        %Bludo.Forms.Form{} -> "form"
-                        _ -> ""
-                      end
-                    }
-                    class={"w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm #{if interaction.enabled, do: "bg-supporting-red-500 text-white hover:bg-supporting-red-600", else: "bg-primary-500 text-white hover:bg-primary-600"}"}
-                  >
-                    <%= if interaction.enabled do %>
-                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" /></svg>
-                    <% else %>
-                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                    <% end %>
-                  </button>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- Q&A COLUMN -->
-        <div id="ugc" class="flex-1 flex flex-col bg-gray-50 border-r border-gray-100">
-          <div class="p-6 border-b border-gray-100 bg-white">
-            <h3 class="font-bold text-gray-900 mb-4">{gettext("Audience Q&A")}</h3>
-            <div class="flex items-center space-x-2">
-              <button phx-click="list-tab" phx-value-tab="posts" class={"px-4 py-1.5 rounded-full text-xs font-bold transition-all #{if @list_tab == :posts, do: "bg-gray-900 text-white", else: "bg-gray-100 text-gray-500 hover:bg-gray-200"}"}>{gettext("Live")} ({@post_count})</button>
-              <button phx-click="list-tab" phx-value-tab="pinned_posts" class={"px-4 py-1.5 rounded-full text-xs font-bold transition-all #{if @list_tab == :pinned_posts, do: "bg-gray-900 text-white", else: "bg-gray-100 text-gray-500 hover:bg-gray-200"}"}>{gettext("Pinned")} ({@pinned_post_count})</button>
-              <button phx-click="list-tab" phx-value-tab="forms" class={"px-4 py-1.5 rounded-full text-xs font-bold transition-all #{if @list_tab == :forms, do: "bg-gray-900 text-white", else: "bg-gray-100 text-gray-500 hover:bg-gray-200"}"}>{gettext("Forms")} ({@form_submit_count})</button>
-            </div>
-          </div>
-          <div class="flex-1 overflow-y-auto p-4 space-y-3">
-            <%= if @list_tab == :posts do %>
-              <div :if={@post_count == 0} class="h-full flex flex-col items-center justify-center text-center opacity-30">
-                <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                <p class="text-sm font-bold">{gettext("No questions yet")}</p>
-              </div>
-              <div id="post-list" phx-update="stream" class="space-y-3">
-                <.live_component :for={{id, post} <- @streams.posts} module={BludoWeb.EventLive.ManageablePostComponent} id={id} event={@event} post={post} />
-              </div>
-            <% end %>
-            <%= if @list_tab == :pinned_posts do %>
-              <div id="pinned-post-list" phx-update="stream" class="space-y-3">
-                <.live_component :for={{id, post} <- @streams.pinned_posts} module={BludoWeb.EventLive.ManageablePostComponent} id={id} event={@event} post={post} />
-              </div>
-            <% end %>
-            <%= if @list_tab == :forms do %>
-              <div id="form-list" phx-update="stream" class="space-y-3">
-                <div :for={{id, submission} <- @streams.form_submits} id={id}>
-                   <.live_component module={BludoWeb.EventLive.FormSubmissionComponent} id={"form-submission-#{submission.id}"} submission={submission} event={@event} />
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- SETTINGS COLUMN -->
-        <div class="w-80 bg-white flex flex-col border-l border-gray-100">
-          <div class="h-16 flex items-center px-6 border-b border-gray-50 bg-gray-50/50">
-            <h3 class="font-bold text-gray-900 text-sm uppercase tracking-widest">{gettext("Settings")}</h3>
-          </div>
-          <div class="flex-1 overflow-y-auto">
-            <.live_component id="settings-pane" module={BludoWeb.EventLive.ManagerSettingsComponent} create={@create} state={@state} current_interaction={@current_interaction} />
-          </div>
-        </div>
+    <div class="flex items-center space-x-3">
+      <!-- TOUR BUTTON -->
+      <div id="product-tour-btn-header" class="hidden sm:block">
+        <button class="open flex items-center space-x-2 px-3 py-2 text-xs font-bold text-primary-500 hover:bg-primary-50 rounded-lg transition-colors border border-primary-500">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM8.94 6.94a.75.75 0 1 1-1.061-1.061 3 3 0 1 1 2.871 5.026v.345a.75.75 0 0 1-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 1 0 8.94 6.94ZM10 15a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+          </svg>
+          <span>{gettext("How it works ?")}</span>
+        </button>
       </div>
+
+      <div class="h-6 w-px bg-gray-200"></div>
+
+      <a
+        href={~p"/e/#{@event.code}/presenter"}
+        target="_blank"
+        class="flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 transition-all shadow-sm"
+        data-tg-tour={gettext("Open the full-screen Presenter view to show on the big screen.")}
+        data-tg-order="4"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+        <span>{gettext("Open Presenter")}</span>
+      </a>
+
+      <button
+        phx-click="toggle-preview"
+        class={"flex items-center px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 #{if @preview, do: "bg-primary-500 text-white shadow-lg shadow-primary-500/30", else: "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"}"}
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+        {if @preview, do: gettext("Hide Slide"), else: gettext("Show Slide")}
+      </button>
+
+      <a href={~p"/events"} class="flex items-center space-x-1 px-3 py-2 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" /></svg>
+        <span>{gettext("Exit")}</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- DASHBOARD MAIN VIEW (RESIZABLE v29) -->
+  <div 
+    id="resize-container-v29"
+    class="flex-1 flex overflow-hidden"
+    x-data="{ 
+      sW: 450, 
+      iH: 250,
+      stH: 200,
+      iW: 25,
+      stW: 25,
+      drag: null
+    }"
+    x-init="
+      sW = parseInt(localStorage.getItem('s-w') || 450);
+      iH = parseInt(localStorage.getItem('i-h') || 250);
+      stH = parseInt(localStorage.getItem('st-h') || 200);
+      iW = parseInt(localStorage.getItem('i-w') || 25);
+      stW = parseInt(localStorage.getItem('st-w') || 25);
+    "
+    @mousemove.window="
+      if (!drag) return;
+      let rect = $refs.sidebarZone?.getBoundingClientRect();
+      if (!rect && drag !== 'x') return;
+
+      if (drag === 'x') sW = Math.max(200, Math.min(800, window.innerWidth - $event.clientX));
+      if (drag === 'y1') iH = Math.max(100, Math.min(rect.height - 200, $event.clientY - rect.top));
+      if (drag === 'y2') stH = Math.max(100, Math.min(rect.height - 200, rect.bottom - $event.clientY));
+      if (drag === 'sx1') iW = Math.max(15, Math.min(45, (($event.clientX - rect.left) / rect.width) * 100));
+      if (drag === 'sx2') stW = Math.max(15, Math.min(45, ((rect.right - $event.clientX) / rect.width) * 100));
+    "
+    @mouseup.window="
+      if (!drag) return;
+      localStorage.setItem('s-w', sW);
+      localStorage.setItem('i-h', iH);
+      localStorage.setItem('st-h', stH);
+      localStorage.setItem('i-w', iW);
+      localStorage.setItem('st-w', stW);
+      drag = null;
+    "
+  >
+    <!-- SLIDES COLUMN -->
+    <div :if={@preview} id="slides-list-column" class="w-72 border-r border-gray-100 overflow-hidden shrink-0 bg-white" data-tg-tour={gettext("Browse your presentation slides here. Click to jump to a specific page.")} data-tg-order="1">
+       <BludoWeb.EventLive.ManagerComponents.slides_column event={@event} state={@state} />
+    </div>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- BIG SLIDE PREVIEW -->
+        <div id="preview-zone" class={"flex-1 bg-gray-900 flex items-center justify-center p-2 min-h-0 overflow-hidden #{if !@preview, do: 'hidden'}"} data-tg-tour={gettext("See exactly what your audience sees in real-time.")} data-tg-order="2">
+          <div class="w-full max-h-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-2 border-white/5 bg-black pointer-events-none">
+            <iframe class="w-full h-full border-none" src={~p"/e/#{@event.code}/presenter?iframe"}></iframe>
+          </div>
+        </div>
+
+        <!-- X-AXIS GUTTER (VERTICAL BLUE LINE) -->
+        <div 
+         class={"gutter gutter-horizontal gutter-presenter #{if !@preview, do: "hidden"}"}
+         @mousedown="drag = 'x'; $event.preventDefault()"
+        ></div>
+
+        <!-- UNIFIED SIDEBAR / CONTROL PANEL -->
+        <div 
+         id="sidebar-zone" 
+         x-ref="sidebarZone"
+         class={"bg-white border-l border-gray-100 flex flex-col overflow-hidden #{if @preview, do: '', else: 'flex-1'}"}
+         x-bind:style={"#{@preview} ? 'width: ' + sW + 'px' : ''"}
+         data-tg-tour={gettext("Manage interactions and audience posts here. Drag the blue lines to resize any section!")} data-tg-order="3"
+        >
+           <div class={if !@preview, do: "flex flex-row h-full", else: "flex flex-col h-full"}>
+             
+             <!-- ZONE 1: INTERACTIONS -->
+             <div 
+               class="shrink-0 overflow-hidden"
+               x-bind:style={"#{@preview} ? 'height: ' + iH + 'px' : 'width: ' + iW + '%'"}
+             >
+                <BludoWeb.EventLive.ManagerComponents.interactions_sidebar interactions={@interactions} event={@event} />
+             </div>
+
+             <!-- GUTTER 1 (X or Y depending on mode) -->
+             <div 
+               class={"gutter #{if @preview, do: 'gutter-vertical', else: 'gutter-horizontal'}"}
+               @mousedown={if @preview, do: "drag = 'y1'; $event.preventDefault()", else: "drag = 'sx1'; $event.preventDefault()"}
+             ></div>
+             
+             <!-- ZONE 2: Q&A -->
+             <div class="flex-1 overflow-hidden border-gray-100">
+                <BludoWeb.EventLive.ManagerComponents.qa_sidebar 
+                 event={@event}
+                 list_tab={@list_tab}
+                 post_count={@post_count}
+                 pinned_post_count={@pinned_post_count}
+                 streams={@streams}
+                />
+             </div>
+
+             <!-- GUTTER 2 (X or Y depending on mode) -->
+             <div 
+               class={"gutter #{if @preview, do: 'gutter-vertical', else: 'gutter-horizontal'}"}
+               @mousedown={if @preview, do: "drag = 'y2'; $event.preventDefault()", else: "drag = 'sx2'; $event.preventDefault()"}
+             ></div>
+
+             <!-- ZONE 3: SETTINGS -->
+             <div 
+               class="shrink-0 overflow-hidden"
+               x-bind:style={"#{@preview} ? 'height: ' + stH + 'px' : 'width: ' + stW + '%'"}
+             >
+                <BludoWeb.EventLive.ManagerComponents.settings_sidebar create={@create} state={@state} current_interaction={@current_interaction} />
+             </div>
+           </div>
+        </div>
     </div>
   </div>
 </div>

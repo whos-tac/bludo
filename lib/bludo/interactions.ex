@@ -52,9 +52,13 @@ defmodule Bludo.Interactions do
         broadcast \\ false
       ) do
     with polls <- Polls.list_polls_at_position(presentation_file_id, position),
-         forms <- Forms.list_forms_at_position(presentation_file_id, position),
+         forms <-
+           Forms.list_forms_at_position(presentation_file_id, position)
+           |> Bludo.Repo.preload([:form_submits]),
          embeds <- Embeds.list_embeds_at_position(presentation_file_id, position),
-         quizzes <- Quizzes.list_quizzes_at_position(presentation_file_id, position) do
+         quizzes <-
+           Quizzes.list_quizzes_at_position(presentation_file_id, position)
+           |> Bludo.Repo.preload([:quiz_responses]) do
       interactions =
         (polls ++ forms ++ embeds ++ quizzes)
         |> Enum.sort_by(& &1.inserted_at, {:asc, NaiveDateTime})

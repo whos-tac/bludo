@@ -1,30 +1,30 @@
 
 @theme {
-  /* Slido Green (Accent) */
-  --color-primary-50: #ECFDF5;
-  --color-primary-100: #D1FAE5;
-  --color-primary-200: #A7F3D0;
-  --color-primary-300: #6EE7B7;
-  --color-primary-400: #34D399;
-  --color-primary-500: #218C50; /* Slido Green */
-  --color-primary-600: #1C7A45;
-  --color-primary-700: #155E35;
-  --color-primary-800: #0E3F24;
-  --color-primary-900: #072012;
+  /* BULME Color Palette */
+  --color-primary-50: #F4FFFF; /* Twilight Blue / Background Cards */
+  --color-primary-100: #E0F7FA;
+  --color-primary-200: #B2EBF2;
+  --color-primary-300: #8CD4FE; /* Light Blue Accent / Highlights */
+  --color-primary-400: #57B6EC;
+  --color-primary-500: #3A8FCC; /* Button Blue / Interactive Buttons */
+  --color-primary-600: #2E72A3;
+  --color-primary-700: #22557A;
+  --color-primary-800: #163851;
+  --color-primary-900: #102D41; /* BULME Blue / Header-Nav Background */
   
-  /* Slido Dark / UI Controls */
-  --color-secondary-50: #F6F6F6;
-  --color-secondary-100: #E7E7E7;
-  --color-secondary-200: #D1D1D1;
-  --color-secondary-300: #B0B0B0;
-  --color-secondary-400: #888888;
-  --color-secondary-500: #1C1C1C; /* Slido Dark */
+  /* Secondary / Neutral Scales */
+  --color-secondary-50: #F8F9FA;
+  --color-secondary-100: #F1F3F5;
+  --color-secondary-200: #E9ECEF;
+  --color-secondary-300: #DEE2E6;
+  --color-secondary-400: #666666; /* Guidelines Borders */
+  --color-secondary-500: #1A1A1A; /* Text Main / Anthracite */
   --color-secondary-600: #161616;
   --color-secondary-700: #101010;
   --color-secondary-800: #0A0A0A;
   --color-secondary-900: #050505;
   
-  /* Department Colors */
+  /* Department Accent Colors */
   --color-dept-maschinenbau: #7BB7E5;
   --color-dept-elektrotechnik: #DE5528;
   --color-dept-elektronik: #A2CB3E;
@@ -34,7 +34,7 @@
   --color-neutral-50: #F8F9FA;
   --color-neutral-100: #F1F3F5;
   --color-neutral-200: #E9ECEF;
-  --color-neutral-300: #DEE2E6;
+  --color-neutral-300: #E2E8F0; /* Standard Border Color */
   --color-neutral-400: #CED4DA;
   --color-neutral-500: #ADB5BD;
   --color-neutral-600: #868E96;
@@ -83,11 +83,11 @@
   --font-family-serif: 'Inter', sans-serif;
   --font-display: 'DIN Condensed', sans-serif;
   
-  /* Box Shadows - Modern Minimalist (Very Subtle) */
+  /* Box Shadows - Flat Design (Minimalist) */
   --shadow-base: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 0 4px 6px -2px rgba(0, 0, 0, 0.01);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.01);
 }

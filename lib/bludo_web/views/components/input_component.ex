@@ -133,6 +133,7 @@ defmodule BludoWeb.Component.Input do
 
     ~H"""
     <button
+      id={"check-#{@key}"}
       phx-click={checked(@checked, @key)}
       disabled={@disabled}
       phx-value-key={@key}
@@ -168,6 +169,7 @@ defmodule BludoWeb.Component.Input do
 
     ~H"""
     <button
+      id={"check-#{@key}"}
       phx-click={checked(@checked, @key)}
       disabled={@disabled}
       phx-value-key={@key}
@@ -192,24 +194,6 @@ defmodule BludoWeb.Component.Input do
 
   def checked(true, key, js) do
     js
-    |> JS.remove_class("translate-x-6",
-      to: "#check-#{key} > span"
-    )
-    |> JS.add_class("translate-x-0",
-      to: "#check-#{key} > span"
-    )
-    |> JS.remove_class("opacity-0 ease-out duration-100",
-      to: "#check-#{key} > span > span"
-    )
-    |> JS.add_class("opacity-100 ease-in duration-200",
-      to: "#check-#{key} > span > span"
-    )
-    |> JS.remove_class("opacity-100 ease-in duration-200",
-      to: "#check-#{key} > span > span:nth-child(2)"
-    )
-    |> JS.add_class("opacity-0 ease-out duration-100",
-      to: "#check-#{key} > span > span:nth-child(2)"
-    )
     |> JS.push("checked", value: %{key: key, value: false})
   end
 

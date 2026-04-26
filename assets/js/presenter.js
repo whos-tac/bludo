@@ -9,6 +9,19 @@ export class Presenter {
   }
 
   init(refresh = false) {
+    if (this.slider) {
+      try {
+        if (typeof this.slider.destroy === "function") {
+          this.slider.destroy();
+        }
+      } catch (e) {
+        console.error("Error destroying slider", e);
+      }
+    }
+
+    const container = document.querySelector("#slider");
+    if (!container || container.children.length === 0) return;
+
     this.slider = tns({
       container: "#slider",
       items: 1,
@@ -28,88 +41,57 @@ export class Presenter {
       return;
     }
 
-    this.context.handleEvent("page", (data) => {
+    this.pageHandler = (data) => {
       //set current page
       if (this.currentPage == data.current_page) {
         return;
       }
 
       this.currentPage = parseInt(data.current_page);
-      this.slider.goTo(data.current_page);
-
-    });
-
-    this.context.handleEvent("chat-visible", (data) => {
-      if (data.value) {
-        document
-          .getElementById("post-list")
-          .classList.remove("animate__animated", "animate__fadeOutLeft");
-        document
-          .getElementById("post-list")
-          .classList.add("animate__animated", "animate__fadeInLeft");
-
-        document
-          .getElementById("pinned-post-list")
-          .classList.remove("animate__animated", "animate__fadeOutLeft");
-        document
-          .getElementById("pinned-post-list")
-          .classList.add("animate__animated", "animate__fadeInLeft");
-      } else {
-        document
-          .getElementById("post-list")
-          .classList.remove("animate__animated", "animate__fadeInLeft");
-        document
-          .getElementById("post-list")
-          .classList.add("animate__animated", "animate__fadeOutLeft");
-
-        document
-          .getElementById("pinned-post-list")
-          .classList.remove("animate__animated", "animate__fadeInLeft");
-        document
-          .getElementById("pinned-post-list")
-          .classList.add("animate__animated", "animate__fadeOutLeft");
+      if (this.slider && this.slider.goTo) {
+        this.slider.goTo(data.current_page);
       }
-    });
+    };
 
-    this.context.handleEvent("poll-visible", (data) => {
+    this.chatVisibleHandler = (data) => {
+      const wrapper = document.getElementById("post-list-wrapper");
+      if (!wrapper) return;
+
       if (data.value) {
-        document
-          .getElementById("poll")
-          .classList.remove("animate__animated", "animate__fadeOut");
-        document
-          .getElementById("poll")
-          .classList.add("animate__animated", "animate__fadeIn");
+        wrapper.classList.remove("animate__animated", "animate__fadeOutLeft");
+        wrapper.classList.add("animate__animated", "animate__fadeInLeft");
       } else {
-        document
-          .getElementById("poll")
-          .classList.remove("animate__animated", "animate__fadeIn");
-        document
-          .getElementById("poll")
-          .classList.add("animate__animated", "animate__fadeOut");
+        wrapper.classList.remove("animate__animated", "animate__fadeInLeft");
+        wrapper.classList.add("animate__animated", "animate__fadeOutLeft");
       }
-    });
+    };
 
-    this.context.handleEvent("join-screen-visible", (data) => {
+    this.pollVisibleHandler = (data) => {
+      const el = document.getElementById("poll");
+      if (!el) return;
       if (data.value) {
-        document
-          .getElementById("joinScreen")
-          .classList.remove("animate__animated", "animate__fadeOut");
-        document
-          .getElementById("joinScreen")
-          .classList.add("animate__animated", "animate__fadeIn");
+        el.classList.remove("animate__animated", "animate__fadeOut");
+        el.classList.add("animate__animated", "animate__fadeIn");
       } else {
-        document
-          .getElementById("joinScreen")
-          .classList.remove("animate__animated", "animate__fadeIn");
-        document
-          .getElementById("joinScreen")
-          .classList.add("animate__animated", "animate__fadeOut");
+        el.classList.remove("animate__animated", "animate__fadeIn");
+        el.classList.add("animate__animated", "animate__fadeOut");
       }
-    });
+    };
 
-    window.addEventListener("keyup", (e) => {
+    this.joinScreenVisibleHandler = (data) => {
+      const el = document.getElementById("joinScreen");
+      if (!el) return;
+      if (data.value) {
+        el.classList.remove("animate__animated", "animate__fadeOut");
+        el.classList.add("animate__animated", "animate__fadeIn");
+      } else {
+        el.classList.remove("animate__animated", "animate__fadeIn");
+        el.classList.add("animate__animated", "animate__fadeOut");
+      }
+    };
+
+    this.keyupHandler = (e) => {
       if (e.target.tagName.toLowerCase() != "input") {
-
         switch (e.key) {
           case "f": // F
             e.preventDefault();
@@ -117,53 +99,74 @@ export class Presenter {
             break;
           case "ArrowLeft":
             e.preventDefault();
-            window.opener.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "ArrowLeft" })
-            );
+            if (window.opener) {
+              window.opener.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "ArrowLeft" })
+              );
+            }
             break;
           case "ArrowRight":
             e.preventDefault();
-            window.opener.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "ArrowRight" })
-            );
+            if (window.opener) {
+              window.opener.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "ArrowRight" })
+              );
+            }
             break;
         }
       }
-    });
+    };
 
-    window.addEventListener("storage", (e) => {
-      console.log(e)
+    this.storageHandler = (e) => {
       if (e.key == "slide-position") {
-        console.log("settings new value " + Date.now())
         this.currentPage = parseInt(e.newValue);
-        this.slider.goTo(e.newValue);
-
+        if (this.slider && this.slider.goTo) {
+          this.slider.goTo(e.newValue);
+        }
       }
-    })
+    };
+
+    this.context.handleEvent("page", this.pageHandler);
+    this.context.handleEvent("chat-visible", this.chatVisibleHandler);
+    this.context.handleEvent("poll-visible", this.pollVisibleHandler);
+    this.context.handleEvent("join-screen-visible", this.joinScreenVisibleHandler);
+
+    window.addEventListener("keyup", this.keyupHandler);
+    window.addEventListener("storage", this.storageHandler);
   }
 
   update() {
     this.init(true);
   }
 
+  destroy() {
+    window.removeEventListener("keyup", this.keyupHandler);
+    window.removeEventListener("storage", this.storageHandler);
+    if (this.slider) {
+      try {
+        if (typeof this.slider.destroy === "function") {
+          this.slider.destroy();
+        }
+      } catch (e) {
+        console.error("Error destroying slider during hook destruction", e);
+      }
+    }
+  }
+
   fullscreen() {
     var docEl = document.getElementById("presenter");
+    if (!docEl) return;
 
     try {
-      docEl
-        .webkitRequestFullscreen()
-        .then(function () {})
-        .catch(function (error) {});
+      if (docEl.webkitRequestFullscreen) {
+        docEl.webkitRequestFullscreen();
+      } else if (docEl.requestFullscreen) {
+        docEl.requestFullscreen();
+      } else if (docEl.mozRequestFullScreen) {
+        docEl.mozRequestFullScreen();
+      }
     } catch (e) {
-      docEl
-        .requestFullscreen()
-        .then(function () {})
-        .catch(function (error) {});
-
-      docEl
-        .mozRequestFullScreen()
-        .then(function () {})
-        .catch(function (error) {});
+      console.error("Fullscreen failed", e);
     }
   }
 }

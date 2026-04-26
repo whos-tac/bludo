@@ -14,6 +14,7 @@ defmodule Bludo.Presentations.PresentationState do
           banned: [String.t()] | nil,
           show_only_pinned: boolean() | nil,
           show_attendee_count: boolean() | nil,
+          control_bar_visible: boolean() | nil,
           presentation_file_id: integer() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
@@ -30,6 +31,7 @@ defmodule Bludo.Presentations.PresentationState do
     field :banned, {:array, :string}, default: []
     field :show_only_pinned, :boolean, default: false
     field :show_attendee_count, :boolean, default: true
+    field :control_bar_visible, :boolean, default: true
 
     belongs_to :presentation_file, Bludo.Presentations.PresentationFile
 
@@ -50,6 +52,7 @@ defmodule Bludo.Presentations.PresentationState do
       :anonymous_chat_enabled,
       :show_only_pinned,
       :show_attendee_count,
+      :control_bar_visible,
       :message_reaction_enabled
     ])
     |> validate_required([])
