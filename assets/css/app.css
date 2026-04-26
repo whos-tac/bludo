@@ -182,3 +182,16 @@
   cursor: row-resize;
   height: 8px;
 }
+
+/* BULME Color Cycling Wave Animation */
+.bulme-wave-bg {
+  background: linear-gradient(270deg, #7bb7e5, #de5528, #a2cb3e, #ffe32c);
+  background-size: 800% 800%;
+  animation: bulme-wave-cycle 8s ease infinite;
+}
+
+@keyframes bulme-wave-cycle {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
